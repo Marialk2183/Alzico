@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alzico - Working Cognitive Tests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-title {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .test-instructions {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .question-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .question-text {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .answer-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .answer-option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .answer-option:hover {
+            border-color: #4A90E2;
+            background: #f8f9fa;
+        }
+        .answer-option.selected {
+            border-color: #4A90E2;
+            background: #e3f2fd;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .nav-btn {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        .nav-btn:hover {
+            background: #357ABD;
+        }
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .progress-bar {
+            background: #e9ecef;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+            transition: width 0.3s ease;
+        }
+        .timer {
+            text-align: center;
+            font-size: 1.2em;
+            color: #FF6B6B;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .results {
+            text-align: center;
+            padding: 30px;
+        }
+        .score {
+            font-size: 3em;
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+        .interpretation {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .recommendations {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div id="test-interface">
+            <div class="test-header">
+                <h1 class="test-title" id="test-title">Cognitive Assessment</h1>
+                <p class="test-instructions" id="test-instructions">Loading test...</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <div class="timer" id="timer" style="display: none;"></div>
+
+            <div class="question-container" id="question-container">
+                <h2 class="question-text" id="question-text">Loading question...</h2>
+                <div id="answer-area"></div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn" onclick="previousQuestion()" disabled>Previous</button>
+                <button class="nav-btn" id="next-btn" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+
+        <div id="results" style="display: none;">
+            <div class="results">
+                <h1>Test Complete!</h1>
+                <div class="score" id="final-score">0%</div>
+                <div class="interpretation" id="interpretation">Results analysis...</div>
+                <div class="recommendations">
+                    <h3>Recommendations:</h3>
+                    <ul id="recommendations-list">
+                        <li>Results should be interpreted by healthcare professionals</li>
+                        <li>Consider consulting with a neurologist or geriatrician</li>
+                        <li>Monitor cognitive changes over time</li>
+                        <li>Implement appropriate interventions and support services</li>
+                    </ul>
+                </div>
+                <button class="nav-btn" onclick="returnToDashboard()" style="margin-top: 20px;">Return to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="utils/testResults.js"></script>
+    <script>
+        // Test Engine Implementation
+        class CognitiveTestEngine {
+            constructor() {
+                this.currentTest = null;
+                this.currentQuestionIndex = 0;
+                this.userAnswers = [];
+                this.startTime = null;
+                this.timer = null;
+            }
+
+            // Get test data
+            getTestData(testId) {
+                const tests = {
+                    'mmse': this.getMMSETest(),
+                    'adas-cog13': this.getADASCogTest(),
+                    'cdr': this.getCDRTest(),
+                    'clock-drawing': this.getClockDrawingTest(),
+                    'trail-making': this.getTrailMakingTest(),
+                    'verbal-fluency': this.getVerbalFluencyTest(),
+                    'digit-span': this.getDigitSpanTest(),
+                    'boston-naming': this.getBostonNamingTest(),
+                    'rey-auditory': this.getReyAuditoryTest(),
+                    'stroop-test': this.getStroopTest(),
+                    'category-fluency': this.getCategoryFluencyTest(),
+                    'block-design': this.getBlockDesignTest(),
+                    'logical-memory': this.getLogicalMemoryTest()
+                };
+                return tests[testId];
+            }
+
+            // MMSE Test
+            getMMSETest() {
+                return {
+                    title: 'Mini-Mental State Examination (MMSE)',
+                    instructions: 'This test evaluates your overall cognitive function. Please answer each question to the best of your ability.',
+                    questions: [
+                        {
+                            question: 'What year is it?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What season is it?',
+                            type: 'multiple-choice',
+                            options: ['Spring', 'Summer', 'Fall', 'Winter'],
+                            points: 1
+                        },
+                        {
+                            question: 'What month is it?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What day of the week is it?',
+                            type: 'multiple-choice',
+                            options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                            points: 1
+                        },
+                        {
+                            question: 'What date is it?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What country are we in?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What state/province are we in?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What city are we in?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What building are we in?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'What floor are we on?',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'I will say three words. Please repeat them: APPLE, PENNY, TABLE',
+                            type: 'text-input',
+                            points: 3
+                        },
+                        {
+                            question: 'Spell the word "WORLD" backwards',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Now repeat the three words I said earlier: APPLE, PENNY, TABLE',
+                            type: 'text-input',
+                            points: 3
+                        },
+                        {
+                            question: 'What is this object? (Show a pencil)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Follow this command: "Take a piece of paper in your right hand, fold it in half, and put it on the floor"',
+                            type: 'text-input',
+                            points: 3
+                        },
+                        {
+                            question: 'Read and follow this instruction: "CLOSE YOUR EYES"',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Write a complete sentence',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Copy this design (Show intersecting pentagons)',
+                            type: 'text-input',
+                            points: 1
+                        }
+                    ]
+                };
+            }
+
+            // ADAS-Cog13 Test
+            getADASCogTest() {
+                return {
+                    title: 'ADAS-Cog13 Assessment',
+                    instructions: 'This test is specifically designed to assess cognitive changes associated with Alzheimer\'s disease.',
+                    questions: [
+                        {
+                            question: 'Word Recall: Remember these 10 words: Apple, Penny, Table, House, Ocean, Chair, Phone, Lamp, Book, Tree',
+                            type: 'text-input',
+                            points: 10
+                        },
+                        {
+                            question: 'Commands: Follow these commands exactly: 1) Make a fist, 2) Point to ceiling then floor, 3) Put right hand on left ear',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Constructive Praxis: Copy this geometric shape exactly (Show a circle with a cross inside)',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Naming: Name these objects: Pencil, Watch, Shoe, Chair, Key',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Ideational Praxis: Show how to use: Comb, Toothbrush, Scissors, Spoon',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Orientation: What year, month, day, city, and building are we in?',
+                            type: 'text-input',
+                            points: 8
+                        },
+                        {
+                            question: 'Word Recognition: Identify previously seen words from a list',
+                            type: 'text-input',
+                            points: 12
+                        },
+                        {
+                            question: 'Comprehension: Follow complex instructions',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Word Finding: Complete sentences with missing words',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Spoken Language Ability: Rate speech clarity and fluency',
+                            type: 'multiple-choice',
+                            options: ['Normal', 'Mild impairment', 'Moderate impairment', 'Severe impairment'],
+                            points: 5
+                        },
+                        {
+                            question: 'Delayed Word Recall: Remember the 10 words from earlier',
+                            type: 'text-input',
+                            points: 10
+                        },
+                        {
+                            question: 'Remembering Test Instructions: What were you supposed to do?',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Number Cancellation: Find and mark all number "3" in this grid',
+                            type: 'text-input',
+                            points: 5
+                        }
+                    ]
+                };
+            }
+
+            // CDR Test
+            getCDRTest() {
+                return {
+                    title: 'Clinical Dementia Rating Scale (CDR)',
+                    instructions: 'This assessment evaluates your cognitive and functional abilities across multiple domains.',
+                    questions: [
+                        {
+                            question: 'Memory: How would you rate your memory problems?',
+                            type: 'multiple-choice',
+                            options: ['No memory problems', 'Mild memory problems', 'Moderate memory problems', 'Severe memory problems'],
+                            points: 1
+                        },
+                        {
+                            question: 'Orientation: How well do you know where you are and what time it is?',
+                            type: 'multiple-choice',
+                            options: ['Fully oriented', 'Mildly disoriented', 'Moderately disoriented', 'Severely disoriented'],
+                            points: 1
+                        },
+                        {
+                            question: 'Judgment: How well can you make decisions and solve problems?',
+                            type: 'multiple-choice',
+                            options: ['Good judgment', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
+                            points: 1
+                        },
+                        {
+                            question: 'Community Affairs: How well can you handle financial and community responsibilities?',
+                            type: 'multiple-choice',
+                            options: ['Independent', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
+                            points: 1
+                        },
+                        {
+                            question: 'Home and Hobbies: How well can you manage household tasks and hobbies?',
+                            type: 'multiple-choice',
+                            options: ['Independent', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
+                            points: 1
+                        },
+                        {
+                            question: 'Personal Care: How well can you take care of yourself?',
+                            type: 'multiple-choice',
+                            options: ['Fully independent', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
+                            points: 1
+                        }
+                    ]
+                };
+            }
+
+            // Clock Drawing Test
+            getClockDrawingTest() {
+                return {
+                    title: 'Clock Drawing Test',
+                    instructions: 'Draw a clock face with all numbers and set the hands to show 10 minutes past 11 o\'clock.',
+                    questions: [
+                        {
+                            question: 'Draw a clock face with numbers 1-12 and set hands to 11:10',
+                            type: 'text-input',
+                            points: 10
+                        }
+                    ]
+                };
+            }
+
+            // Trail Making Test
+            getTrailMakingTest() {
+                return {
+                    title: 'Trail Making Test',
+                    instructions: 'Connect the dots in sequence as quickly as possible.',
+                    questions: [
+                        {
+                            question: 'Part A: Connect numbers 1-25 in sequence',
+                            type: 'text-input',
+                            points: 10
+                        },
+                        {
+                            question: 'Part B: Connect numbers and letters alternately (1-A-2-B-3-C...)',
+                            type: 'text-input',
+                            points: 10
+                        }
+                    ]
+                };
+            }
+
+            // Verbal Fluency Test
+            getVerbalFluencyTest() {
+                return {
+                    title: 'Verbal Fluency Test (FAS)',
+                    instructions: 'Generate as many words as possible beginning with the letters F, A, and S.',
+                    questions: [
+                        {
+                            question: 'Generate words beginning with F (60 seconds)',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Generate words beginning with A (60 seconds)',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Generate words beginning with S (60 seconds)',
+                            type: 'text-input',
+                            points: 5
+                        }
+                    ]
+                };
+            }
+
+            // Digit Span Test
+            getDigitSpanTest() {
+                return {
+                    title: 'Digit Span Test',
+                    instructions: 'Listen to sequences of numbers and repeat them.',
+                    questions: [
+                        {
+                            question: 'Forward: Repeat these numbers in the same order: 3-7-9-1-4',
+                            type: 'text-input',
+                            points: 8
+                        },
+                        {
+                            question: 'Backward: Repeat these numbers in reverse order: 8-2-6-9-3',
+                            type: 'text-input',
+                            points: 8
+                        }
+                    ]
+                };
+            }
+
+            // Boston Naming Test
+            getBostonNamingTest() {
+                return {
+                    title: 'Boston Naming Test',
+                    instructions: 'Name the object shown in each picture.',
+                    questions: [
+                        {
+                            question: 'Name this object (Picture 1)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 2)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 3)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 4)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 5)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 6)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 7)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 8)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 9)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 10)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 11)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 12)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 13)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 14)',
+                            type: 'text-input',
+                            points: 1
+                        },
+                        {
+                            question: 'Name this object (Picture 15)',
+                            type: 'text-input',
+                            points: 1
+                        }
+                    ]
+                };
+            }
+
+            // Rey Auditory Test
+            getReyAuditoryTest() {
+                return {
+                    title: 'Rey Auditory Verbal Learning Test',
+                    instructions: 'Listen to a list of 15 words and try to remember them.',
+                    questions: [
+                        {
+                            question: 'Trial 1: Recall as many words as you can remember',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Trial 2: Recall as many words as you can remember',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Trial 3: Recall as many words as you can remember',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Delayed Recall: After a delay, recall as many words as you can remember',
+                            type: 'text-input',
+                            points: 5
+                        }
+                    ]
+                };
+            }
+
+            // Stroop Test
+            getStroopTest() {
+                return {
+                    title: 'Stroop Color and Word Test',
+                    instructions: 'Name the color of the ink, not the word.',
+                    questions: [
+                        {
+                            question: 'Congruent: Name the color of the ink (words match colors)',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Incongruent: Name the color of the ink (words don\'t match colors)',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Interference: Calculate the difference between congruent and incongruent times',
+                            type: 'text-input',
+                            points: 5
+                        }
+                    ]
+                };
+            }
+
+            // Category Fluency Test
+            getCategoryFluencyTest() {
+                return {
+                    title: 'Category Fluency Test',
+                    instructions: 'Generate as many animal names as possible in 60 seconds.',
+                    questions: [
+                        {
+                            question: 'Name as many animals as you can think of in 60 seconds',
+                            type: 'text-input',
+                            points: 10
+                        }
+                    ]
+                };
+            }
+
+            // Block Design Test
+            getBlockDesignTest() {
+                return {
+                    title: 'Block Design Test',
+                    instructions: 'Copy the geometric pattern shown using the colored blocks provided.',
+                    questions: [
+                        {
+                            question: 'Copy this geometric pattern using colored blocks',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Copy this more complex geometric pattern',
+                            type: 'text-input',
+                            points: 5
+                        },
+                        {
+                            question: 'Copy this advanced geometric pattern',
+                            type: 'text-input',
+                            points: 5
+                        }
+                    ]
+                };
+            }
+
+            // Logical Memory Test
+            getLogicalMemoryTest() {
+                return {
+                    title: 'Logical Memory Test',
+                    instructions: 'Listen to a short story and then recall as many details as you can remember.',
+                    questions: [
+                        {
+                            question: 'Immediate Recall: Recall the story you just heard',
+                            type: 'text-input',
+                            points: 8
+                        },
+                        {
+                            question: 'Delayed Recall: After a delay, recall the story again',
+                            type: 'text-input',
+                            points: 7
+                        }
+                    ]
+                };
+            }
+
+            // Start test
+            startTest(testId) {
+                this.currentTest = this.getTestData(testId);
+                this.currentQuestionIndex = 0;
+                this.userAnswers = [];
+                this.startTime = Date.now();
+                return this.currentTest;
+            }
+
+            // Get current question
+            getCurrentQuestion() {
+                if (!this.currentTest) return null;
+                return this.currentTest.questions[this.currentQuestionIndex];
+            }
+
+            // Submit answer
+            submitAnswer(answer) {
+                this.userAnswers[this.currentQuestionIndex] = answer;
+            }
+
+            // Next question
+            nextQuestion() {
+                if (this.currentQuestionIndex < this.currentTest.questions.length - 1) {
+                    this.currentQuestionIndex++;
+                    return true;
+                }
+                return false;
+            }
+
+            // Previous question
+            previousQuestion() {
+                if (this.currentQuestionIndex > 0) {
+                    this.currentQuestionIndex--;
+                    return true;
+                }
+                return false;
+            }
+
+            // Calculate score
+            calculateScore() {
+                if (!this.currentTest) return null;
+
+                let totalScore = 0;
+                let maxPossibleScore = 0;
+
+                this.currentTest.questions.forEach((question, index) => {
+                    maxPossibleScore += question.points;
+                    if (this.userAnswers[index]) {
+                        totalScore += question.points;
+                    }
+                });
+
+                const percentage = Math.round((totalScore / maxPossibleScore) * 100);
+                const timeSpent = Date.now() - this.startTime;
+
+                return {
+                    score: totalScore,
+                    maxScore: maxPossibleScore,
+                    percentage: percentage,
+                    timeSpent: timeSpent
+                };
+            }
+
+            // Get interpretation
+            getInterpretation(score) {
+                const interpretations = {
+                    'mmse': {
+                        24: 'Normal cognitive function',
+                        19: 'Mild cognitive impairment',
+                        10: 'Moderate cognitive impairment',
+                        0: 'Severe cognitive impairment'
+                    },
+                    'adas-cog13': {
+                        0: 'Normal cognitive function',
+                        10: 'Mild cognitive impairment',
+                        20: 'Moderate cognitive impairment',
+                        30: 'Severe cognitive impairment'
+                    },
+                    'cdr': {
+                        0: 'No dementia',
+                        0.5: 'Questionable dementia',
+                        1: 'Mild dementia',
+                        2: 'Moderate dementia'
+                    }
+                };
+
+                const testInterpretation = interpretations[this.currentTest.id];
+                if (!testInterpretation) return 'Results should be interpreted by healthcare professionals.';
+
+                const thresholds = Object.keys(testInterpretation).map(Number).sort((a, b) => b - a);
+                for (let threshold of thresholds) {
+                    if (score >= threshold) {
+                        return testInterpretation[threshold];
+                    }
+                }
+
+                return 'Results should be interpreted by healthcare professionals.';
+            }
+        }
+
+        // Global variables
+        let testEngine = new CognitiveTestEngine();
+        let currentTestId = null;
+
+        // Start test function
+        function startTest(testId) {
+            currentTestId = testId;
+            const test = testEngine.startTest(testId);
+            
+            document.getElementById('test-title').textContent = test.title;
+            document.getElementById('test-instructions').textContent = test.instructions;
+            
+            loadQuestion();
+            showTestInterface();
+        }
+
+        // Load question
+        function loadQuestion() {
+            const question = testEngine.getCurrentQuestion();
+            if (!question) return;
+
+            document.getElementById('question-text').textContent = question.question;
+            
+            // Update progress
+            const progress = ((testEngine.currentQuestionIndex + 1) / testEngine.currentTest.questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+
+            // Load answer area
+            const answerArea = document.getElementById('answer-area');
+            answerArea.innerHTML = '';
+
+            if (question.type === 'multiple-choice') {
+                question.options.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'answer-option';
+                    optionDiv.textContent = option;
+                    optionDiv.onclick = () => selectOption(optionDiv, option);
+                    answerArea.appendChild(optionDiv);
+                });
+            } else {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'answer-input';
+                input.placeholder = 'Enter your answer...';
+                input.id = 'answer-input';
+                answerArea.appendChild(input);
+            }
+
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = testEngine.currentQuestionIndex === 0;
+            document.getElementById('next-btn').textContent = 
+                testEngine.currentQuestionIndex === testEngine.currentTest.questions.length - 1 ? 'Complete' : 'Next';
+        }
+
+        // Select option
+        function selectOption(optionDiv, value) {
+            document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+            optionDiv.classList.add('selected');
+            testEngine.submitAnswer(value);
+        }
+
+        // Next question
+        function nextQuestion() {
+            // Save current answer if it's a text input
+            const input = document.getElementById('answer-input');
+            if (input && input.value.trim()) {
+                testEngine.submitAnswer(input.value.trim());
+            }
+
+            if (testEngine.nextQuestion()) {
+                loadQuestion();
+            } else {
+                completeTest();
+            }
+        }
+
+        // Previous question
+        function previousQuestion() {
+            if (testEngine.previousQuestion()) {
+                loadQuestion();
+            }
+        }
+
+        // Complete test
+        function completeTest() {
+            const results = testEngine.calculateScore();
+            const interpretation = testEngine.getInterpretation(results.score);
+            
+            // Save results
+            if (window.TestResultsManager) {
+                const resultsManager = new TestResultsManager();
+                resultsManager.addResult({
+                    testId: testEngine.currentTest.id || currentTestId,
+                    testName: testEngine.currentTest.title,
+                    score: results.score,
+                    maxScore: results.maxScore,
+                    percentage: results.percentage,
+                    timeSpent: results.timeSpent,
+                    answers: testEngine.userAnswers
+                });
+            }
+            
+            document.getElementById('final-score').textContent = results.percentage + '%';
+            document.getElementById('interpretation').textContent = interpretation;
+            
+            showResults();
+        }
+
+        // Show test interface
+        function showTestInterface() {
+            document.getElementById('test-interface').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        // Show results
+        function showResults() {
+            document.getElementById('test-interface').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        // Return to dashboard
+        function returnToDashboard() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize with the test from URL parameter
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const testId = urlParams.get('test') || 'mmse';
+            startTest(testId);
+        };
+    </script>
+</body>
+</html> 
