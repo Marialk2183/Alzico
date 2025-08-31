@@ -15,1138 +15,405 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #F8F9FA;
             min-height: 100vh;
             color: #333;
         }
 
-        .medical-header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
+            padding: 20px;
         }
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-icon {
-            font-size: 2.5em;
-            margin-right: 15px;
-        }
-
-        .logo-text h1 {
-            font-size: 2.2em;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .logo-text p {
-            font-size: 1em;
-            opacity: 0.9;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 15px;
-        }
-
-        .header-btn {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .header-btn:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.4);
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .welcome-section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
+        .header {
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .welcome-title {
-            font-size: 2.5em;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .welcome-subtitle {
-            font-size: 1.3em;
-            color: #7f8c8d;
             margin-bottom: 30px;
-            line-height: 1.6;
         }
 
-        .cta-button {
-            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-            color: white;
-            padding: 18px 40px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4A90E2;
+            margin-bottom: 10px;
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4);
-        }
-
-        .tests-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .test-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border-left: 5px solid #4A90E2;
-        }
-
-        .test-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .test-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .test-icon {
-            font-size: 2.5em;
-            margin-right: 15px;
-            width: 60px;
-            text-align: center;
-        }
-
-        .test-info h3 {
-            font-size: 1.4em;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-
-        .test-info p {
-            font-size: 0.9em;
-            color: #7f8c8d;
-        }
-
-        .test-description {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .test-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .test-details {
-            display: flex;
-            gap: 15px;
-        }
-
-        .test-detail {
-            background: #f8f9fa;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
+        .subtitle {
+            font-size: 18px;
             color: #666;
         }
 
-        .difficulty-badge {
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .difficulty-easy { background: #d4edda; color: #155724; }
-        .difficulty-medium { background: #fff3cd; color: #856404; }
-        .difficulty-hard { background: #f8d7da; color: #721c24; }
-
-        .start-test-btn {
-            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+        .reset-button {
+            background: #FF6B6B;
             color: white;
+            padding: 10px 20px;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
             cursor: pointer;
+            margin: 0 auto 20px;
+            display: block;
             transition: all 0.3s ease;
-            width: 100%;
         }
 
-        .start-test-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+        .reset-button:hover {
+            background: #FF5252;
+            transform: translateY(-1px);
         }
 
-        .medical-features {
+        .tab-container {
+            display: flex;
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .features-title {
-            font-size: 2em;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-        }
-
-        .feature-item {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-
-        .feature-title {
-            font-size: 1.2em;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .feature-description {
-            color: #7f8c8d;
-            line-height: 1.5;
-        }
-
-        .medical-disclaimer {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 40px;
-        }
-
-        .disclaimer-title {
-            font-size: 1.2em;
-            color: #856404;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .disclaimer-text {
-            color: #856404;
-            line-height: 1.6;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Test Interface Styles */
-        .test-interface {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .test-progress {
-            background: #f8f9fa;
             border-radius: 10px;
-            padding: 20px;
+            padding: 4px;
             margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 15px;
+        .tab-button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            transition: all 0.3s ease;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-            transition: width 0.3s ease;
+        .tab-button.active {
+            background: #4A90E2;
+            color: white;
         }
 
-        .question-container {
-            background: #f8f9fa;
+        .form-container {
+            background: white;
+            padding: 30px;
             border-radius: 15px;
-            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4A90E2;
+            text-align: center;
             margin-bottom: 25px;
         }
 
-        .question-text {
-            font-size: 1.3em;
-            color: #2c3e50;
+        .input-container {
             margin-bottom: 20px;
-            line-height: 1.5;
         }
 
-        .answer-options {
-            display: grid;
-            gap: 15px;
+        .label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4A90E2;
+            margin-bottom: 8px;
+            display: block;
         }
 
-        .answer-option {
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .input {
+            width: 100%;
+            background: #F8F9FA;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
 
-        .answer-option:hover {
+        .input:focus {
+            outline: none;
             border-color: #4A90E2;
-            background: #f8f9fa;
         }
 
-        .answer-option.selected {
-            border-color: #4A90E2;
-            background: #e3f2fd;
+        .demo-credentials {
+            background: #FFF3CD;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #FFEAA7;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
-        .test-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
+        .demo-text {
+            font-size: 14px;
+            color: #856404;
+            font-style: italic;
         }
 
-        .nav-btn {
-            background: #6c757d;
+        .submit-button {
+            width: 100%;
+            background: #4A90E2;
             color: white;
+            padding: 18px;
             border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            flex: 1;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
         }
 
-        .nav-btn:hover {
-            background: #5a6268;
+        .submit-button:hover {
+            background: #357ABD;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
         }
 
-        .nav-btn.primary {
-            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .nav-btn.primary:hover {
-            background: linear-gradient(135deg, #357ABD 0%, #2c5aa0 100%);
+        .error-message {
+            background: #F8D7DA;
+            color: #721C24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
+        .success-message {
+            background: #D4EDDA;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
             }
-
-            .tests-grid {
-                grid-template-columns: 1fr;
+            
+            .form-container {
+                padding: 20px;
             }
-
-            .test-card {
-                margin-bottom: 20px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
+            
+            .title {
+                font-size: 28px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Medical Header -->
-    <header class="medical-header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo-icon">🧠</div>
-                <div class="logo-text">
-                    <h1>Alzico</h1>
-                    <p>Medical Cognitive Assessment Platform</p>
-                </div>
-            </div>
-            <div class="header-actions">
-                <a href="#" class="header-btn" onclick="showScreen('help')">Help</a>
-                <a href="#" class="header-btn" onclick="showScreen('sos')">SOS</a>
-            </div>
-        </div>
-    </header>
-
-    <div class="main-container">
-        <!-- Welcome Screen -->
-        <div id="welcome-screen">
-            <div class="welcome-section">
-                <h1 class="welcome-title">Professional Cognitive Assessment Platform</h1>
-                <p class="welcome-subtitle">
-                    Comprehensive Alzheimer's detection and cognitive assessment tools designed for healthcare professionals, 
-                    patients, and families. Our platform includes 13 standardized cognitive tests validated by medical research.
-                </p>
-                <button class="cta-button" onclick="showScreen('login')">Begin Assessment</button>
-            </div>
-
-            <!-- Medical Features -->
-            <div class="medical-features">
-                <h2 class="features-title">Clinical-Grade Assessment Tools</h2>
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">🔬</div>
-                        <h3 class="feature-title">Evidence-Based</h3>
-                        <p class="feature-description">All tests are validated by clinical research and medical literature</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">📊</div>
-                        <h3 class="feature-title">Standardized Scoring</h3>
-                        <p class="feature-description">Professional scoring systems with clinical cutoff values</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">🔄</div>
-                        <h3 class="feature-title">Progress Tracking</h3>
-                        <p class="feature-description">Monitor cognitive changes over time with detailed reports</p>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">📱</div>
-                        <h3 class="feature-title">Multi-Platform</h3>
-                        <p class="feature-description">Access assessments on any device, anywhere, anytime</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Medical Disclaimer -->
-            <div class="medical-disclaimer">
-                <h3 class="disclaimer-title">⚠️ Medical Disclaimer</h3>
-                <p class="disclaimer-text">
-                    This cognitive assessment platform is designed for educational, screening, and monitoring purposes only. 
-                    It is not a substitute for professional medical diagnosis, treatment, or advice. 
-                    Always consult with qualified healthcare professionals for medical concerns. 
-                    Results should be interpreted by trained medical professionals in conjunction with other clinical information.
-                </p>
-            </div>
+    <div class="container">
+        <div class="header">
+            <div class="title">🧠 Alzico</div>
+            <div class="subtitle">Alzheimer's Detection App</div>
         </div>
 
-        <!-- Login Screen -->
-        <div id="login-screen" class="hidden">
-            <div class="welcome-section">
-                <h1 class="welcome-title">Patient Information</h1>
-                <p class="welcome-subtitle">
-                    Please provide your information to begin the cognitive assessment process.
-                </p>
-                
-                <div style="max-width: 500px; margin: 0 auto; text-align: left;">
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">
-                            Full Name:
-                        </label>
-                        <input
-                            type="text"
-                            id="userName"
-                            placeholder="Enter your full name"
-                            style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; box-sizing: border-box;"
-                        />
-                    </div>
-                    
-                    <div style="margin-bottom: 30px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50;">
-                            Age:
-                        </label>
-                        <input
-                            type="number"
-                            id="userAge"
-                            placeholder="Enter your age"
-                            style="width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; box-sizing: border-box;"
-                        />
-                    </div>
-                </div>
+        <button class="reset-button" onclick="resetApp()">🔄 Reset App</button>
 
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button class="cta-button" style="background: #6c757d;" onclick="showScreen('welcome')">Back</button>
-                    <button class="cta-button" onclick="continueToConsent()">Continue</button>
-                </div>
-            </div>
+        <div class="tab-container">
+            <button class="tab-button active" onclick="switchTab('login')">Login</button>
+            <button class="tab-button" onclick="switchTab('signup')">Sign Up</button>
         </div>
 
-        <!-- Consent Screen -->
-        <div id="consent-screen" class="hidden">
-            <div class="welcome-section">
-                <h1 class="welcome-title">Assessment Consent</h1>
-                <p class="welcome-subtitle">
-                    Before proceeding with the cognitive assessment, please read and understand the following information.
-                </p>
-                
-                <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin: 30px 0; text-align: left; line-height: 1.6;">
-                    <h3 style="color: #2c3e50; margin-bottom: 20px;">Dear <span id="userNameDisplay"></span>,</h3>
-                    
-                    <p style="margin-bottom: 15px; color: #555;">
-                        This cognitive assessment platform is designed to help evaluate cognitive function and provide insights into brain health. 
-                        The assessment includes standardized cognitive tests that are commonly used in clinical practice.
-                    </p>
-                    
-                    <h4 style="color: #2c3e50; margin: 20px 0 15px 0;">What to expect:</h4>
-                    <ul style="margin-left: 20px; margin-bottom: 20px; color: #555;">
-                        <li>13 standardized cognitive tests covering multiple domains</li>
-                        <li>Assessment duration: approximately 60-90 minutes</li>
-                        <li>Tests for memory, attention, language, visuospatial skills, and executive function</li>
-                        <li>Professional scoring and interpretation guidelines</li>
-                        <li>Results for educational and screening purposes only</li>
-                    </ul>
-                    
-                    <p style="color: #d63031; font-weight: 600;">
-                        <strong>Important:</strong> This assessment is not a medical diagnosis. 
-                        Results should be discussed with healthcare professionals for proper interpretation and clinical decision-making.
-                    </p>
-                </div>
-
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button class="cta-button" style="background: #6c757d;" onclick="showScreen('login')">Back</button>
-                    <button class="cta-button" onclick="showScreen('dashboard')">I Consent - Begin Assessment</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Dashboard Screen -->
-        <div id="dashboard-screen" class="hidden">
-            <div class="welcome-section">
-                <h1 class="welcome-title">Welcome, <span id="userNameHome"></span>!</h1>
-                <p class="welcome-subtitle">
-                    Select a cognitive assessment to begin. Each test is designed to evaluate specific cognitive domains.
-                </p>
+        <div id="login-form" class="form-container">
+            <div class="form-title">Welcome Back</div>
+            
+            <div class="input-container">
+                <label class="label">Email:</label>
+                <input type="email" id="login-email" class="input" placeholder="Enter your email">
             </div>
 
-            <!-- Cognitive Tests Grid -->
-            <div class="tests-grid">
-                <!-- MMSE -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🧠</div>
-                        <div class="test-info">
-                            <h3>MMSE</h3>
-                            <p>Mini-Mental State Examination</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        30-point global cognitive assessment covering orientation, memory, attention, language, and visuospatial skills.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 10 min</span>
-                            <span class="difficulty-badge difficulty-easy">Easy</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('mmse')">Start MMSE Test</button>
-                </div>
-
-                <!-- ADAS-Cog13 -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🔬</div>
-                        <div class="test-info">
-                            <h3>ADAS-Cog13</h3>
-                            <p>Alzheimer's Disease Assessment Scale</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        13-item comprehensive assessment specifically designed for Alzheimer's disease detection and monitoring.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 20 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('adas-cog13')">Start ADAS-Cog13</button>
-                </div>
-
-                <!-- CDR -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">📊</div>
-                        <div class="test-info">
-                            <h3>CDR</h3>
-                            <p>Clinical Dementia Rating Scale</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Dementia staging and severity assessment across six functional domains.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 15 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('cdr')">Start CDR Test</button>
-                </div>
-
-                <!-- Clock Drawing -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🕐</div>
-                        <div class="test-info">
-                            <h3>Clock Drawing</h3>
-                            <p>Clock Drawing Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Visuospatial and executive function assessment requiring clock face construction.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 5 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('clock-drawing')">Start Clock Test</button>
-                </div>
-
-                <!-- Trail Making -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🔄</div>
-                        <div class="test-info">
-                            <h3>Trail Making</h3>
-                            <p>Trail Making Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Attention and executive function assessment measuring processing speed and mental flexibility.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 8 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('trail-making')">Start Trail Test</button>
-                </div>
-
-                <!-- Verbal Fluency -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">💬</div>
-                        <div class="test-info">
-                            <h3>Verbal Fluency</h3>
-                            <p>Verbal Fluency Test (FAS)</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Language ability and executive function assessment measuring word generation.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 6 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('verbal-fluency')">Start Fluency Test</button>
-                </div>
-
-                <!-- Digit Span -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🔢</div>
-                        <div class="test-info">
-                            <h3>Digit Span</h3>
-                            <p>Digit Span Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Immediate and working memory assessment measuring number sequence recall.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 7 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('digit-span')">Start Digit Test</button>
-                </div>
-
-                <!-- Boston Naming -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🖼️</div>
-                        <div class="test-info">
-                            <h3>Boston Naming</h3>
-                            <p>Boston Naming Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Confrontational naming ability assessment measuring language function.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 8 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('boston-naming')">Start Naming Test</button>
-                </div>
-
-                <!-- Rey Auditory -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🎧</div>
-                        <div class="test-info">
-                            <h3>Rey Auditory</h3>
-                            <p>Rey Auditory Verbal Learning Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Verbal learning and memory assessment measuring word list recall.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 12 min</span>
-                            <span class="difficulty-badge difficulty-hard">Hard</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('rey-auditory')">Start Rey Test</button>
-                </div>
-
-                <!-- Stroop Test -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🎨</div>
-                        <div class="test-info">
-                            <h3>Stroop Test</h3>
-                            <p>Stroop Color and Word Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Cognitive interference and executive function assessment measuring response inhibition.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 8 min</span>
-                            <span class="difficulty-badge difficulty-hard">Hard</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('stroop-test')">Start Stroop Test</button>
-                </div>
-
-                <!-- Category Fluency -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">📝</div>
-                        <div class="test-info">
-                            <h3>Category Fluency</h3>
-                            <p>Category Fluency Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Semantic memory and verbal fluency assessment measuring category word generation.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 5 min</span>
-                            <span class="difficulty-badge difficulty-easy">Easy</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('category-fluency')">Start Category Test</button>
-                </div>
-
-                <!-- Block Design -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">🧩</div>
-                        <div class="test-info">
-                            <h3>Block Design</h3>
-                            <p>Block Design Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Visuospatial ability and constructional praxis assessment using geometric patterns.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 10 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('block-design')">Start Block Test</button>
-                </div>
-
-                <!-- Logical Memory -->
-                <div class="test-card">
-                    <div class="test-header">
-                        <div class="test-icon">📖</div>
-                        <div class="test-info">
-                            <h3>Logical Memory</h3>
-                            <p>Logical Memory Test</p>
-                        </div>
-                    </div>
-                    <p class="test-description">
-                        Story recall and comprehension assessment measuring verbal memory.
-                    </p>
-                    <div class="test-meta">
-                        <div class="test-details">
-                            <span class="test-detail">⏱️ 8 min</span>
-                            <span class="difficulty-badge difficulty-medium">Medium</span>
-                        </div>
-                    </div>
-                    <button class="start-test-btn" onclick="startTest('logical-memory')">Start Memory Test</button>
-                </div>
+            <div class="input-container">
+                <label class="label">Password:</label>
+                <input type="password" id="login-password" class="input" placeholder="Enter your password">
             </div>
 
-                    <div style="text-align: center; margin-top: 40px;">
-            <button class="cta-button" onclick="showScreen('welcome')">Return to Home</button>
-            <button class="cta-button" onclick="window.open('results-dashboard.html', '_blank')" style="margin-left: 15px; background: #FF9500;">View Results Dashboard</button>
-        </div>
-        </div>
-
-        <!-- Test Interface -->
-        <div id="test-interface" class="hidden">
-            <div class="test-interface">
-                <div class="test-progress">
-                    <h2 id="test-title" style="margin-bottom: 15px; color: #2c3e50;">Test in Progress</h2>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                    <p style="text-align: center; color: #7f8c8d;">Question <span id="current-question">1</span> of <span id="total-questions">10</span></p>
-                </div>
-
-                <div class="question-container">
-                    <h3 class="question-text" id="question-text">Loading question...</h3>
-                    <div class="answer-options" id="answer-options">
-                        <!-- Answer options will be populated here -->
-                    </div>
-                </div>
-
-                <div class="test-navigation">
-                    <button class="nav-btn" onclick="previousQuestion()">Previous</button>
-                    <button class="nav-btn primary" onclick="nextQuestion()">Next</button>
-                </div>
+            <div class="demo-credentials">
+                <div class="demo-text">Demo: demo@alzico.com / password123</div>
             </div>
+
+            <button class="submit-button" onclick="handleLogin()">Login</button>
         </div>
 
-        <!-- Help Screen -->
-        <div id="help-screen" class="hidden">
-            <div class="welcome-section">
-                <h1 class="welcome-title">Help & Support</h1>
-                <p class="welcome-subtitle">
-                    Get assistance with using the cognitive assessment platform.
-                </p>
-                
-                <div style="text-align: left; max-width: 800px; margin: 0 auto;">
-                    <h3 style="color: #2c3e50; margin: 20px 0;">How to Use the Platform</h3>
-                    <p style="margin-bottom: 15px; color: #555;">
-                        This platform provides professional cognitive assessments for educational and screening purposes.
-                    </p>
-                    
-                    <h4 style="color: #2c3e50; margin: 20px 0 15px 0;">Getting Started:</h4>
-                    <ol style="margin-left: 20px; margin-bottom: 20px; color: #555;">
-                        <li>Complete the patient information form</li>
-                        <li>Read and consent to the assessment</li>
-                        <li>Select a cognitive test from the dashboard</li>
-                        <li>Follow the test instructions carefully</li>
-                        <li>Complete all questions in the test</li>
-                        <li>Review your results and recommendations</li>
-                    </ol>
-                    
-                    <h4 style="color: #2c3e50; margin: 20px 0 15px 0;">Need More Help?</h4>
-                    <p style="color: #555;">
-                        For technical support or medical questions, please contact healthcare professionals or our support team.
-                    </p>
-                </div>
-
-                <button class="cta-button" onclick="showScreen('welcome')">Return to Home</button>
+        <div id="signup-form" class="form-container" style="display: none;">
+            <div class="form-title">Create Account</div>
+            
+            <div class="input-container">
+                <label class="label">Full Name:</label>
+                <input type="text" id="signup-fullname" class="input" placeholder="Enter your full name">
             </div>
-        </div>
 
-        <!-- SOS Screen -->
-        <div id="sos-screen" class="hidden">
-            <div class="welcome-section">
-                <h1 class="welcome-title">Emergency Help</h1>
-                <p class="welcome-subtitle">
-                    If you need immediate assistance, use the resources below.
-                </p>
-                
-                <div style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 15px; padding: 25px; margin: 30px 0;">
-                    <h3 style="color: #721c24; margin-bottom: 15px;">Emergency Contacts</h3>
-                    <p style="color: #721c24; margin-bottom: 15px;">
-                        <strong>Emergency Services:</strong> 911 (or your local emergency number)
-                    </p>
-                    <p style="color: #721c24; margin-bottom: 15px;">
-                        <strong>National Suicide Prevention Lifeline:</strong> 1-800-273-8255
-                    </p>
-                    <p style="color: #721c24;">
-                        <strong>Medical Emergency:</strong> Seek immediate medical attention if needed
-                    </p>
-                </div>
-
-                <div style="background: #d1ecf1; border: 1px solid #bee5eb; border-radius: 15px; padding: 25px; margin-bottom: 30px;">
-                    <h3 style="color: #0c5460; margin-bottom: 15px;">What to do in an emergency:</h3>
-                    <ul style="color: #0c5460; margin-left: 20px;">
-                        <li>Call emergency services immediately if there's a medical emergency</li>
-                        <li>Contact your healthcare provider for urgent medical concerns</li>
-                        <li>Go to the nearest emergency room if necessary</li>
-                        <li>Stay calm and follow emergency instructions</li>
-                    </ul>
-                </div>
-
-                <button class="cta-button" onclick="showScreen('welcome')">Return to Home</button>
+            <div class="input-container">
+                <label class="label">Email:</label>
+                <input type="email" id="signup-email" class="input" placeholder="Enter your email">
             </div>
+
+            <div class="input-container">
+                <label class="label">Password:</label>
+                <input type="password" id="signup-password" class="input" placeholder="Enter your password">
+            </div>
+
+            <div class="input-container">
+                <label class="label">Confirm Password:</label>
+                <input type="password" id="signup-confirm-password" class="input" placeholder="Confirm your password">
+            </div>
+
+            <button class="submit-button" onclick="handleSignup()">Sign Up</button>
         </div>
+
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
     </div>
 
     <script>
-        let currentScreen = 'welcome';
-        let userName = '';
-        let currentTest = null;
-        let currentQuestionIndex = 0;
-        let testAnswers = [];
+        let currentTab = 'login';
 
-        // Sample test data (in a real app, this would come from the backend)
-        const testData = {
-            'mmse': {
-                title: 'Mini-Mental State Examination (MMSE)',
-                questions: [
-                    {
-                        question: 'What year is it?',
-                        type: 'text-input',
-                        points: 1
-                    },
-                    {
-                        question: 'What season is it?',
-                        type: 'multiple-choice',
-                        options: ['Spring', 'Summer', 'Fall', 'Winter'],
-                        points: 1
-                    },
-                    {
-                        question: 'What month is it?',
-                        type: 'text-input',
-                        points: 1
-                    },
-                    {
-                        question: 'What day of the week is it?',
-                        type: 'text-input',
-                        points: 1
-                    },
-                    {
-                        question: 'What date is it?',
-                        type: 'text-input',
-                        points: 1
-                    }
-                ]
-            },
-            'adas-cog13': {
-                title: 'ADAS-Cog13 Assessment',
-                questions: [
-                    {
-                        question: 'Word Recall: Remember these 10 words: Apple, Penny, Table, House, Ocean, Chair, Phone, Lamp, Book, Tree',
-                        type: 'text-input',
-                        points: 10
-                    },
-                    {
-                        question: 'Commands: Follow these commands exactly: 1) Make a fist, 2) Point to ceiling then floor, 3) Put right hand on left ear',
-                        type: 'text-input',
-                        points: 5
-                    },
-                    {
-                        question: 'Constructive Praxis: Copy this geometric shape exactly',
-                        type: 'text-input',
-                        points: 5
-                    }
-                ]
-            }
-        };
-
-        function showScreen(screenName) {
-            // Hide all screens
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('consent-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('test-interface').classList.add('hidden');
-            document.getElementById('help-screen').classList.add('hidden');
-            document.getElementById('sos-screen').classList.add('hidden');
+        function switchTab(tab) {
+            currentTab = tab;
             
-            // Show the requested screen
-            document.getElementById(screenName + '-screen').classList.remove('hidden');
-            currentScreen = screenName;
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
             
-            // Update user name displays
-            if (userName) {
-                const userNameElements = document.querySelectorAll('#userNameDisplay, #userNameHome');
-                userNameElements.forEach(el => el.textContent = userName);
-            }
-        }
-
-        function continueToConsent() {
-            const nameInput = document.getElementById('userName');
-            const ageInput = document.getElementById('userAge');
-            
-            if (nameInput.value.trim() && ageInput.value.trim()) {
-                userName = nameInput.value.trim();
-                showScreen('consent');
+            // Show/hide forms
+            if (tab === 'login') {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('signup-form').style.display = 'none';
             } else {
-                alert('Please fill in all fields to continue.');
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('signup-form').style.display = 'block';
             }
+            
+            // Clear messages
+            hideMessages();
         }
 
-        function startTest(testId) {
-            // Open the working test interface for all 13 tests
-            window.open('test-interface.html?test=' + testId, '_blank');
-        }
-
-        function showTestInterface(test) {
-            currentTest = test;
-            showScreen('test-interface');
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            if (!currentTest || currentQuestionIndex >= currentTest.questions.length) {
-                completeTest();
+        function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            
+            if (!email || !password) {
+                showError('Please fill in all fields');
                 return;
             }
-
-            const question = currentTest.questions[currentQuestionIndex];
-            document.getElementById('test-title').textContent = currentTest.title;
-            document.getElementById('question-text').textContent = question.question;
-            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
-            document.getElementById('total-questions').textContent = currentTest.questions.length;
             
-            // Update progress bar
-            const progress = ((currentQuestionIndex + 1) / currentTest.questions.length) * 100;
-            document.getElementById('progress-fill').style.width = progress + '%';
-
-            // Load answer options based on question type
-            const answerOptions = document.getElementById('answer-options');
-            answerOptions.innerHTML = '';
-
-            if (question.type === 'multiple-choice') {
-                question.options.forEach((option, index) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'answer-option';
-                    optionDiv.textContent = option;
-                    optionDiv.onclick = () => selectOption(optionDiv, option);
-                    answerOptions.appendChild(optionDiv);
-                });
-            } else if (question.type === 'text-input') {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.placeholder = 'Enter your answer...';
-                input.style.cssText = 'width: 100%; padding: 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 16px; box-sizing: border-box;';
-                input.id = 'answer-input';
-                answerOptions.appendChild(input);
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address');
+                return;
             }
-        }
-
-        function selectOption(optionDiv, value) {
-            // Remove previous selection
-            document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
-            // Select current option
-            optionDiv.classList.add('selected');
-            // Store answer
-            testAnswers[currentQuestionIndex] = value;
-        }
-
-        function nextQuestion() {
-            // Save current answer if it's a text input
-            if (currentTest.questions[currentQuestionIndex].type === 'text-input') {
-                const input = document.getElementById('answer-input');
-                if (input && input.value.trim()) {
-                    testAnswers[currentQuestionIndex] = input.value.trim();
-                }
-            }
-
-            if (currentQuestionIndex < currentTest.questions.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion();
+            
+            // Demo login
+            if (email === 'demo@alzico.com' && password === 'password123') {
+                showSuccess('Login successful! Redirecting to Alzico dashboard...');
+                setTimeout(() => {
+                    // Redirect to the existing demo.html dashboard with all tests
+                    window.location.href = 'demo.html';
+                }, 1500);
             } else {
-                completeTest();
+                showError('Invalid email or password. Try demo@alzico.com / password123');
             }
         }
 
-        function previousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                loadQuestion();
+        function handleSignup() {
+            const fullName = document.getElementById('signup-fullname').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value.trim();
+            const confirmPassword = document.getElementById('signup-confirm-password').value.trim();
+            
+            if (!fullName || !email || !password || !confirmPassword) {
+                showError('Please fill in all fields');
+                return;
             }
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+            
+            showSuccess('Account created successfully! Redirecting to Alzico dashboard...');
+            setTimeout(() => {
+                // Redirect to the existing demo.html dashboard with all tests
+                window.location.href = 'demo.html';
+            }, 1500);
         }
 
-        function completeTest() {
-            // Calculate score
-            let totalScore = 0;
-            let maxScore = 0;
-            
-            currentTest.questions.forEach((question, index) => {
-                maxScore += question.points;
-                if (testAnswers[index]) {
-                    totalScore += question.points;
-                }
-            });
-
-            const percentage = Math.round((totalScore / maxScore) * 100);
-            
-            // Show results (in a real app, this would be more sophisticated)
-            alert(`Test Complete!\n\nScore: ${totalScore}/${maxScore} (${percentage}%)\n\nThis is a simplified result. In a real medical application, results would include detailed analysis and clinical recommendations.`);
-            
-            // Return to dashboard
-            showScreen('dashboard');
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
         }
 
-        // Initialize the app
-        showScreen('welcome');
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+        }
+
+        function hideMessages() {
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+        }
+
+        function resetApp() {
+            // Reset all form fields
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('signup-fullname').value = '';
+            document.getElementById('signup-email').value = '';
+            document.getElementById('signup-password').value = '';
+            document.getElementById('signup-confirm-password').value = '';
+            
+            // Switch back to login tab
+            switchTab('login');
+            
+            // Clear messages
+            hideMessages();
+            
+            alert('App reset successfully!');
+        }
+
+        // Add Enter key support for login
+        document.getElementById('login-password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
+
+        // Add Enter key support for signup
+        document.getElementById('signup-confirm-password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSignup();
+            }
+        });
     </script>
 </body>
 </html> 

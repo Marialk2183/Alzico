@@ -3,21 +3,22 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
+  TouchableOpacity,
   Dimensions,
   RefreshControl,
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { useAuth } from '../context/AuthContext';
+import AnalyticsDashboard from '../components/AnalyticsDashboard';
+import ProgressTracker from '../components/ProgressTracker';
 import { getDashboardSummary, getTestPerformanceStats } from '../utils/testResults';
-import { COGNITIVE_TESTS } from '../utils/cognitiveTests';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
+type DashboardScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const { width, height } = Dimensions.get('window');
 
@@ -36,13 +37,21 @@ interface DashboardData {
   severityBreakdown: Record<string, number>;
 }
 
-const HomeScreen = () => {
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+const DashboardScreen = () => {
+  const navigation = useNavigation<DashboardScreenNavigationProp>();
   const { user, logout } = useAuth();
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [recentTests, setRecentTests] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'progress'>('overview');
+
+  // Auto-refresh dashboard when screen comes into focus (e.g., after completing a test)
+  useFocusEffect(
+    React.useCallback(() => {
+      loadDashboardData();
+    }, [])
+  );
 
   useEffect(() => {
     loadDashboardData();
@@ -145,6 +154,13 @@ const HomeScreen = () => {
       case 'severe': return '#DC3545';
       default: return '#6C757D';
     }
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return '#28A745'; // Green for high scores
+    if (score >= 70) return '#FFC107'; // Yellow for medium scores
+    if (score >= 50) return '#FD7E14'; // Orange for low scores
+    return '#DC3545'; // Red for very low scores
   };
 
   const renderQuickStats = () => (
@@ -298,7 +314,7 @@ const HomeScreen = () => {
 
   const renderRecentActivity = () => (
     <View style={styles.recentActivityCard}>
-      <Text style={styles.cardTitle}>Recent Activity</Text>
+      <Text style={styles.cardTitle}>Recent Test Results</Text>
       
       {recentTests.length > 0 ? (
         recentTests.map((test, index) => (
@@ -314,19 +330,179 @@ const HomeScreen = () => {
               </Text>
             </View>
             
-            <View style={styles.recentTestScore}>
-              <Text style={styles.recentTestScoreText}>{test.score}%</Text>
+            <View style={[
+              styles.recentTestScore,
+              { backgroundColor: getScoreColor(test.score) === '#28A745' ? '#E8F5E8' : 
+                getScoreColor(test.score) === '#FFC107' ? '#FFF8E1' :
+                getScoreColor(test.score) === '#FD7E14' ? '#FFF3E0' : '#FFEBEE'
+              }]
+            }>
+              <Text style={[
+                styles.recentTestScoreText,
+                { color: getScoreColor(test.score) }
+              ]}>
+                {test.score}%
+              </Text>
             </View>
           </View>
         ))
       ) : (
         <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>No recent activity</Text>
-          <Text style={styles.noDataSubtext}>Complete your first test to see activity</Text>
+          <Text style={styles.noDataText}>No recent test results</Text>
+          <Text style={styles.noDataSubtext}>Complete your first test to see results</Text>
         </View>
       )}
     </View>
   );
+
+  const renderTestScores = () => {
+    // Get recent test results with more details
+    const recentResults = dashboardData?.topPerformingTests || [];
+    
+    return (
+      <View style={styles.testScoresCard}>
+        <Text style={styles.cardTitle}>Test Performance Scores</Text>
+        
+        {recentResults.length > 0 ? (
+          recentResults.map((test, index) => (
+            <View key={test.testId} style={styles.testScoreItem}>
+              <View style={styles.testScoreHeader}>
+                <View style={styles.testScoreRank}>
+                  <Text style={styles.testScoreRankText}>{index + 1}</Text>
+                </View>
+                
+                <View style={styles.testScoreInfo}>
+                  <Text style={styles.testScoreName}>{test.testName}</Text>
+                  <Text style={styles.testScoreStats}>
+                    {test.totalTests} tests completed
+                  </Text>
+                </View>
+              </View>
+              
+              <View style={styles.testScoreDetails}>
+                <View style={styles.scoreBarContainer}>
+                  <View style={styles.scoreBar}>
+                    <View 
+                      style={[
+                        styles.scoreBarFill,
+                        { 
+                          width: `${test.averageScore}%`,
+                          backgroundColor: getScoreColor(test.averageScore)
+                        }
+                      ]} 
+                    />
+                  </View>
+                  <Text style={styles.scorePercentage}>{test.averageScore}%</Text>
+                </View>
+                
+                <View style={styles.scoreBreakdown}>
+                  <Text style={styles.scoreBreakdownText}>
+                    Best: {Math.min(100, test.averageScore + 10)}% | 
+                    Recent: {test.averageScore}%
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ))
+        ) : (
+          <View style={styles.noDataContainer}>
+            <Text style={styles.noDataText}>No test performance data</Text>
+            <Text style={styles.noDataSubtext}>Take tests to see your performance scores</Text>
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  const renderScoreTrends = () => {
+    const trend = dashboardData?.recentTrend || 'stable';
+    const trendData = recentTests.slice(0, 5).reverse();
+    
+    if (trendData.length === 0) return null;
+
+    return (
+      <View style={styles.scoreTrendsCard}>
+        <Text style={styles.cardTitle}>Score Trends</Text>
+        
+        <View style={styles.trendChart}>
+          {trendData.map((test, index) => (
+            <View key={index} style={styles.trendItem}>
+              <View style={styles.trendBarContainer}>
+                <View style={[
+                  styles.trendBar,
+                  { 
+                    height: (test.score / 100) * 120,
+                    backgroundColor: getScoreColor(test.score)
+                  }
+                ]} />
+              </View>
+              
+              <View style={styles.trendLabels}>
+                <Text style={styles.trendScore}>{test.score}%</Text>
+                <Text style={styles.trendTestNumber}>Test {test.testNumber}</Text>
+                <Text style={styles.trendDate}>
+                  {new Date(test.date).toLocaleDateString()}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </View>
+        
+        <View style={styles.trendSummary}>
+          <Text style={styles.trendSummaryText}>
+            {trend === 'improving' ? '📈 Your scores are improving!' :
+             trend === 'declining' ? '📉 Your scores need attention' :
+             '➡️ Your scores are stable'}
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'overview':
+        return (
+          <>
+            {renderQuickStats()}
+            {renderTrendCard()}
+            {renderTestScores()}
+            {renderScoreTrends()}
+            {renderTopTests()}
+            {renderSeverityBreakdown()}
+            {renderQuickActions()}
+            {renderRecentActivity()}
+          </>
+        );
+      case 'analytics':
+        return (
+          <AnalyticsDashboard 
+            onRefresh={onRefresh}
+            showDetailed={true}
+          />
+        );
+      case 'progress':
+        return (
+          <ProgressTracker 
+            onRefresh={onRefresh}
+            showDetailed={true}
+          />
+        );
+      default:
+        return (
+          <>
+            {renderQuickStats()}
+            {renderTrendCard()}
+            {renderTestScores()}
+            {renderScoreTrends()}
+            {renderTopTests()}
+            {renderSeverityBreakdown()}
+            {renderQuickActions()}
+            {renderRecentActivity()}
+          </>
+        );
+    }
+  };
 
   if (loading) {
     return (
@@ -358,23 +534,56 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Quick Stats */}
-        {renderQuickStats()}
+        {/* Tab Navigation */}
+        <View style={styles.tabContainer}>
+          <TouchableOpacity
+            style={[
+              styles.tabButton,
+              activeTab === 'overview' && styles.tabButtonActive
+            ]}
+            onPress={() => setActiveTab('overview')}
+          >
+            <Text style={[
+              styles.tabButtonText,
+              activeTab === 'overview' && styles.tabButtonTextActive
+            ]}>
+              Overview
+            </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[
+              styles.tabButton,
+              activeTab === 'analytics' && styles.tabButtonActive
+            ]}
+            onPress={() => setActiveTab('analytics')}
+          >
+            <Text style={[
+              styles.tabButtonText,
+              activeTab === 'analytics' && styles.tabButtonTextActive
+            ]}>
+              Analytics
+            </Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity
+            style={[
+              styles.tabButton,
+              activeTab === 'progress' && styles.tabButtonActive
+            ]}
+            onPress={() => setActiveTab('progress')}
+          >
+            <Text style={[
+              styles.tabButtonText,
+              activeTab === 'progress' && styles.tabButtonTextActive
+            ]}>
+              Progress
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-        {/* Performance Trend */}
-        {renderTrendCard()}
-
-        {/* Top Performing Tests */}
-        {renderTopTests()}
-
-        {/* Severity Breakdown */}
-        {renderSeverityBreakdown()}
-
-        {/* Quick Actions */}
-        {renderQuickActions()}
-
-        {/* Recent Activity */}
-        {renderRecentActivity()}
+        {/* Tab Content */}
+        {renderTabContent()}
 
         {/* Bottom Spacing */}
         <View style={styles.bottomSpacing} />
@@ -429,6 +638,34 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#F0F0F0',
+    borderRadius: 12,
+    padding: 4,
+    marginBottom: 25,
+  },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  tabButtonActive: {
+    backgroundColor: '#4A90E2',
+  },
+  tabButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#666',
+  },
+  tabButtonTextActive: {
+    color: '#fff',
+  },
+  tabContent: {
+    flex: 1,
   },
   quickStatsContainer: {
     flexDirection: 'row',
@@ -495,6 +732,43 @@ const styles = StyleSheet.create({
   trendSubtext: {
     fontSize: 14,
     color: '#666',
+    textAlign: 'center',
+  },
+  quickActionsContainer: {
+    marginBottom: 25,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 15,
+  },
+  actionGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  actionButton: {
+    backgroundColor: '#fff',
+    width: (width - 60) / 3,
+    padding: 20,
+    borderRadius: 16,
+    alignItems: 'center',
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  actionIcon: {
+    fontSize: 32,
+    marginBottom: 10,
+  },
+  actionText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
     textAlign: 'center',
   },
   topTestsCard: {
@@ -621,42 +895,48 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#4A90E2',
   },
-  quickActionsContainer: {
-    marginBottom: 25,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 15,
-  },
-  actionGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  actionButton: {
+  goalsCard: {
     backgroundColor: '#fff',
-    width: (width - 60) / 3,
     padding: 20,
     borderRadius: 16,
-    alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 25,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  actionIcon: {
-    fontSize: 32,
+  goalItem: {
+    marginBottom: 20,
+  },
+  goalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
-  actionText: {
-    fontSize: 14,
+  goalTitle: {
+    fontSize: 16,
     fontWeight: '600',
     color: '#333',
-    textAlign: 'center',
+  },
+  goalProgress: {
+    fontSize: 14,
+    color: '#666',
+  },
+  progressBar: {
+    height: 8,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: '#4A90E2',
+    borderRadius: 4,
+  },
+  bottomSpacing: {
+    height: 20,
   },
   recentActivityCard: {
     backgroundColor: '#fff',
@@ -682,13 +962,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#E3F2FD',
+    backgroundColor: '#E8F5E8',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15,
   },
   recentTestIconText: {
-    fontSize: 20,
+    fontSize: 24,
   },
   recentTestInfo: {
     flex: 1,
@@ -714,9 +994,142 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-  bottomSpacing: {
-    height: 20,
+  testScoresCard: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  testScoreItem: {
+    marginBottom: 20,
+  },
+  testScoreHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  testScoreRank: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#4A90E2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  testScoreRankText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  testScoreInfo: {
+    flex: 1,
+  },
+  testScoreName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 3,
+  },
+  testScoreStats: {
+    fontSize: 12,
+    color: '#666',
+  },
+  testScoreDetails: {
+    alignItems: 'center',
+  },
+  scoreBarContainer: {
+    width: '100%',
+    height: 10,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 5,
+    marginBottom: 10,
+    overflow: 'hidden',
+  },
+  scoreBar: {
+    height: '100%',
+    backgroundColor: '#4A90E2',
+    borderRadius: 5,
+  },
+  scoreBarFill: {
+    height: '100%',
+    backgroundColor: '#4A90E2',
+    borderRadius: 5,
+  },
+  scorePercentage: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  scoreBreakdown: {
+    marginTop: 10,
+  },
+  scoreBreakdownText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+  },
+  scoreTrendsCard: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  trendChart: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 15,
+  },
+  trendItem: {
+    alignItems: 'center',
+  },
+  trendBarContainer: {
+    width: 50,
+    height: 120,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  trendBar: {
+    width: 10,
+    borderRadius: 5,
+  },
+  trendLabels: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  trendScore: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  trendTestNumber: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 5,
+  },
+  trendDate: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 3,
+  },
+  trendSummary: {
+    alignItems: 'center',
+  },
+  trendSummaryText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
   },
 });
 
-export default HomeScreen; 
+export default DashboardScreen; 

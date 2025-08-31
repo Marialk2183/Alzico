@@ -16,7 +16,7 @@ export interface CognitiveTest {
 
 export interface TestQuestion {
   id: string;
-  type: 'multiple-choice' | 'text-input' | 'recall' | 'recognition' | 'drawing' | 'timed' | 'sequence';
+  type: 'multiple-choice' | 'text-input' | 'recall' | 'recognition' | 'drawing' | 'timed' | 'sequence' | 'story-reading' | 'audio-recall';
   question: string;
   options?: string[];
   correctAnswer?: string;
@@ -24,6 +24,8 @@ export interface TestQuestion {
   timeLimit?: number; // in seconds
   image?: string;
   audio?: string;
+  storyContent?: string;
+  required?: boolean;
 }
 
 export interface ScoringSystem {
@@ -126,6 +128,87 @@ export const COGNITIVE_TESTS: CognitiveTest[] = [
         question: 'What floor are we on?',
         points: 1,
         timeLimit: 30
+      },
+      {
+        id: 'mmse_11',
+        type: 'sequence',
+        question: 'I will say three words. Remember them: APPLE, PENNY, TABLE',
+        points: 0,
+        timeLimit: 30
+      },
+      {
+        id: 'mmse_12',
+        type: 'recall',
+        question: 'What were the three words I asked you to remember?',
+        points: 3,
+        timeLimit: 60
+      },
+      {
+        id: 'mmse_13',
+        type: 'sequence',
+        question: 'Count backwards from 100 by 7: 100, 93, 86...',
+        points: 5,
+        timeLimit: 120
+      },
+      {
+        id: 'mmse_14',
+        type: 'text-input',
+        question: 'Spell the word "WORLD" backwards',
+        points: 5,
+        timeLimit: 60
+      },
+      {
+        id: 'mmse_15',
+        type: 'recall',
+        question: 'What were the three words I asked you to remember earlier?',
+        points: 3,
+        timeLimit: 60
+      },
+      {
+        id: 'mmse_16',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'pencil.png',
+        options: ['Pencil', 'Pen', 'Marker', 'Crayon'],
+        correctAnswer: 'Pencil',
+        points: 1,
+        timeLimit: 30
+      },
+      {
+        id: 'mmse_17',
+        type: 'text-input',
+        question: 'Repeat this phrase: "No ifs, ands, or buts"',
+        points: 1,
+        timeLimit: 30
+      },
+      {
+        id: 'mmse_18',
+        type: 'sequence',
+        question: 'Follow this instruction: Take a piece of paper in your right hand, fold it in half, and put it on the floor',
+        points: 3,
+        timeLimit: 60
+      },
+      {
+        id: 'mmse_19',
+        type: 'text-input',
+        question: 'Read this and do what it says: "CLOSE YOUR EYES"',
+        points: 1,
+        timeLimit: 30
+      },
+      {
+        id: 'mmse_20',
+        type: 'text-input',
+        question: 'Write a complete sentence',
+        points: 1,
+        timeLimit: 60
+      },
+      {
+        id: 'mmse_21',
+        type: 'drawing',
+        question: 'Copy this drawing exactly as you see it',
+        image: 'intersecting_pentagons.png',
+        points: 1,
+        timeLimit: 60
       }
     ],
     scoring: {
@@ -154,107 +237,605 @@ export const COGNITIVE_TESTS: CognitiveTest[] = [
     ]
   },
   {
-    id: 'adas-cog13',
-    name: 'ADAS-Cog13',
-    fullName: 'Alzheimer\'s Disease Assessment Scale - Cognitive Subscale (13-item)',
-    description: 'A comprehensive 13-item cognitive assessment specifically designed for Alzheimer\'s disease, measuring memory, language, praxis, and orientation.',
-    category: 'Alzheimer\'s Specific',
-    duration: 20,
+    id: 'boston-naming',
+    name: 'Boston Naming Test',
+    fullName: 'Boston Naming Test (BNT)',
+    description: 'A test of visual confrontation naming that assesses language and semantic memory.',
+    category: 'Language & Memory',
+    duration: 15,
     difficulty: 'Medium',
-    maxScore: 85,
-    instructions: 'This test is specifically designed to assess cognitive changes associated with Alzheimer\'s disease. Please complete each task as instructed.',
+    maxScore: 60,
+    instructions: 'You will see pictures of common objects. Name each object as quickly and accurately as possible.',
     questions: [
       {
-        id: 'adas_1',
+        id: 'bnt_bed',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'bed.png',
+        options: ['Bed', 'Chair', 'Table', 'Sofa'],
+        correctAnswer: 'Bed',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_tree',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'tree.png',
+        options: ['Tree', 'Bush', 'Plant', 'Flower'],
+        correctAnswer: 'Tree',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_house',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'house.png',
+        options: ['House', 'Building', 'Cottage', 'Mansion'],
+        correctAnswer: 'House',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_car',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'car.png',
+        options: ['Car', 'Truck', 'Van', 'Bus'],
+        correctAnswer: 'Car',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_phone',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'phone.png',
+        options: ['Phone', 'Computer', 'Tablet', 'Camera'],
+        correctAnswer: 'Phone',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_book',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'book.png',
+        options: ['Book', 'Magazine', 'Newspaper', 'Journal'],
+        correctAnswer: 'Book',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_clock',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'clock.png',
+        options: ['Clock', 'Watch', 'Timer', 'Stopwatch'],
+        correctAnswer: 'Clock',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_flower',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'flower.png',
+        options: ['Flower', 'Rose', 'Tulip', 'Daisy'],
+        correctAnswer: 'Flower',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_ball',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'ball.png',
+        options: ['Ball', 'Sphere', 'Circle', 'Round'],
+        correctAnswer: 'Ball',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_hat',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'hat.png',
+        options: ['Hat', 'Cap', 'Beanie', 'Helmet'],
+        correctAnswer: 'Hat',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_boat',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'boat.png',
+        options: ['Boat', 'Ship', 'Yacht', 'Canoe'],
+        correctAnswer: 'Boat',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_bird',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'bird.png',
+        options: ['Bird', 'Eagle', 'Sparrow', 'Robin'],
+        correctAnswer: 'Bird',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_fish',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'fish.png',
+        options: ['Fish', 'Salmon', 'Tuna', 'Trout'],
+        correctAnswer: 'Fish',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_apple',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'apple.png',
+        options: ['Apple', 'Orange', 'Banana', 'Pear'],
+        correctAnswer: 'Apple',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'bnt_cup',
+        type: 'recognition',
+        question: 'What is this object?',
+        image: 'cup.png',
+        options: ['Cup', 'Glass', 'Mug', 'Bowl'],
+        correctAnswer: 'Cup',
+        points: 2,
+        timeLimit: 30,
+        required: true
+      }
+    ],
+    scoring: {
+      totalPoints: 60,
+      cutoffScores: {
+        normal: 50,
+        mild: 40,
+        moderate: 30,
+        severe: 0
+      },
+      interpretation: 'Boston Naming Test measures visual confrontation naming ability and semantic memory.'
+    },
+    interpretation: {
+      normal: 'Normal naming ability (50-60 points) - Excellent object recognition and naming',
+      mild: 'Mild naming difficulty (40-49 points) - Some difficulty with object names',
+      moderate: 'Moderate naming difficulty (30-39 points) - Significant naming problems',
+      severe: 'Severe naming difficulty (0-29 points) - Major difficulty with object recognition',
+      recommendations: [
+        'Practice naming everyday objects',
+        'Use visual association techniques',
+        'Engage in word-finding exercises',
+        'Consider speech therapy if persistent',
+        'Maintain regular reading habits'
+      ]
+    },
+    references: [
+      'Kaplan, E., Goodglass, H., & Weintraub, S. (2001). Boston Naming Test (2nd ed.). Philadelphia: Lippincott Williams & Wilkins.',
+      'Goodglass, H., Kaplan, E., & Barresi, B. (2001). Boston Diagnostic Aphasia Examination (3rd ed.). Philadelphia: Lippincott Williams & Wilkins.'
+    ]
+  },
+  {
+    id: 'rey-auditory-verbal',
+    name: 'Rey Auditory Verbal Learning Test',
+    fullName: 'Rey Auditory Verbal Learning Test (RAVLT)',
+    description: 'A comprehensive test of verbal learning and memory with multiple learning trials and delayed recall.',
+    category: 'Memory & Learning',
+    duration: 20,
+    difficulty: 'Hard',
+    maxScore: 75,
+    instructions: 'You will hear a list of 15 words repeated 5 times. After each presentation, recall as many words as possible. Then you will hear a new list and be asked to recall the original list.',
+    questions: [
+      {
+        id: 'ravlt_learning_trial_1',
+        type: 'audio-recall',
+        question: 'Trial 1: Listen to the word list and then recall as many words as you can remember.',
+        audio: 'ravlt_word_list.mp3',
+        points: 0,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_recall_trial_1',
         type: 'recall',
-        question: 'Word Recall: Remember these 10 words: Apple, Penny, Table, House, Ocean, Chair, Phone, Lamp, Book, Tree',
-        points: 10,
-        timeLimit: 60
+        question: 'Recall the words from Trial 1:',
+        points: 15,
+        timeLimit: 120,
+        required: true
       },
       {
-        id: 'adas_2',
-        type: 'sequence',
-        question: 'Commands: Follow these commands exactly: 1) Make a fist, 2) Point to ceiling then floor, 3) Put right hand on left ear',
-        points: 5,
-        timeLimit: 120
+        id: 'ravlt_learning_trial_2',
+        type: 'audio-recall',
+        question: 'Trial 2: Listen to the word list again and then recall as many words as you can remember.',
+        audio: 'ravlt_word_list.mp3',
+        points: 0,
+        timeLimit: 120,
+        required: true
       },
       {
-        id: 'adas_3',
+        id: 'ravlt_recall_trial_2',
+        type: 'recall',
+        question: 'Recall the words from Trial 2:',
+        points: 15,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_learning_trial_3',
+        type: 'audio-recall',
+        question: 'Trial 3: Listen to the word list again and then recall as many words as you can remember.',
+        audio: 'ravlt_word_list.mp3',
+        points: 0,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_recall_trial_3',
+        type: 'recall',
+        question: 'Recall the words from Trial 3:',
+        points: 15,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_learning_trial_4',
+        type: 'audio-recall',
+        question: 'Trial 4: Listen to the word list again and then recall as many words as you can remember.',
+        audio: 'ravlt_word_list.mp3',
+        points: 0,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_recall_trial_4',
+        type: 'recall',
+        question: 'Recall the words from Trial 4:',
+        points: 15,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_learning_trial_5',
+        type: 'audio-recall',
+        question: 'Trial 5: Listen to the word list one final time and then recall as many words as you can remember.',
+        audio: 'ravlt_word_list.mp3',
+        points: 0,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_recall_trial_5',
+        type: 'recall',
+        question: 'Recall the words from Trial 5:',
+        points: 15,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_interference_list',
+        type: 'audio-recall',
+        question: 'Now listen to a new list of words and recall them:',
+        audio: 'ravlt_interference_list.mp3',
+        points: 0,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_recall_interference',
+        type: 'recall',
+        question: 'Recall the words from the new list:',
+        points: 15,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'ravlt_delayed_recall',
+        type: 'recall',
+        question: 'Now recall the words from the original list (without hearing it again):',
+        points: 15,
+        timeLimit: 120,
+        required: true
+      }
+    ],
+    scoring: {
+      totalPoints: 75,
+      cutoffScores: {
+        normal: 60,
+        mild: 45,
+        moderate: 30,
+        severe: 0
+      },
+      interpretation: 'RAVLT measures verbal learning, immediate recall, and delayed recall with interference.'
+    },
+    interpretation: {
+      normal: 'Normal verbal learning (60-75 points) - Excellent word list learning and retention',
+      mild: 'Mild learning difficulty (45-59 points) - Some difficulty with word list learning',
+      moderate: 'Moderate learning difficulty (30-44 points) - Significant learning problems',
+      severe: 'Severe learning difficulty (0-29 points) - Major difficulty with verbal learning',
+      recommendations: [
+        'Practice word list memorization techniques',
+        'Use chunking and grouping strategies',
+        'Engage in memory training exercises',
+        'Consider spaced repetition techniques',
+        'Maintain regular cognitive activities'
+      ]
+    },
+    references: [
+      'Rey, A. (1964). L\'examen clinique en psychologie. Paris: Presses Universitaires de France.',
+      'Lezak, M. D., Howieson, D. B., Bigler, E. D., & Tranel, D. (2012). Neuropsychological assessment (5th ed.). New York: Oxford University Press.'
+    ]
+  },
+  {
+    id: 'clock-drawing',
+    name: 'Clock Drawing Test',
+    fullName: 'Clock Drawing Test (CDT)',
+    description: 'A test of visuospatial abilities, executive function, and conceptual understanding.',
+    category: 'Visuospatial & Executive',
+    duration: 10,
+    difficulty: 'Medium',
+    maxScore: 10,
+    instructions: 'Draw a clock face with all the numbers and set the time to 10 minutes past 11 (11:10).',
+    questions: [
+      {
+        id: 'cdt_instructions',
         type: 'drawing',
-        question: 'Constructive Praxis: Copy this geometric shape exactly',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'adas_4',
-        type: 'recognition',
-        question: 'Naming: Name these objects: Pencil, Watch, Shoe, Chair, Key',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'adas_5',
-        type: 'sequence',
-        question: 'Ideational Praxis: Show how to use: Comb, Toothbrush, Scissors, Spoon',
-        points: 5,
-        timeLimit: 120
-      },
-      {
-        id: 'adas_6',
-        type: 'text-input',
-        question: 'Orientation: What year, month, day, city, and building are we in?',
-        points: 8,
-        timeLimit: 90
-      },
-      {
-        id: 'adas_7',
-        type: 'recognition',
-        question: 'Word Recognition: Identify previously seen words from a list',
-        points: 12,
-        timeLimit: 90
-      },
-      {
-        id: 'adas_8',
-        type: 'sequence',
-        question: 'Comprehension: Follow complex instructions',
-        points: 5,
-        timeLimit: 120
-      },
-      {
-        id: 'adas_9',
-        type: 'text-input',
-        question: 'Word Finding: Complete sentences with missing words',
-        points: 5,
-        timeLimit: 90
-      },
-      {
-        id: 'adas_10',
-        type: 'multiple-choice',
-        question: 'Spoken Language Ability: Rate speech clarity and fluency',
-        options: ['Normal', 'Mild impairment', 'Moderate impairment', 'Severe impairment'],
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'adas_11',
-        type: 'recall',
-        question: 'Delayed Word Recall: Remember the 10 words from earlier',
+        question: 'Draw a clock face with all numbers (1-12) and set the time to 11:10 (10 minutes past 11).',
         points: 10,
-        timeLimit: 60
+        timeLimit: 600,
+        required: true
+      }
+    ],
+    scoring: {
+      totalPoints: 10,
+      cutoffScores: {
+        normal: 8,
+        mild: 6,
+        moderate: 4,
+        severe: 0
+      },
+      interpretation: 'Clock Drawing Test assesses visuospatial abilities, executive function, and conceptual understanding.'
+    },
+    interpretation: {
+      normal: 'Normal clock drawing (8-10 points) - Excellent visuospatial and executive function',
+      mild: 'Mild drawing difficulty (6-7 points) - Some difficulty with spatial organization',
+      moderate: 'Moderate drawing difficulty (4-5 points) - Significant spatial problems',
+      severe: 'Severe drawing difficulty (0-3 points) - Major difficulty with spatial tasks',
+      recommendations: [
+        'Practice drawing simple geometric shapes',
+        'Use visual organization techniques',
+        'Engage in spatial reasoning exercises',
+        'Consider occupational therapy if persistent',
+        'Maintain regular drawing activities'
+      ]
+    },
+    references: [
+      'Sunderland, T., Hill, J. L., Mellow, A. M., Lawlor, B. A., Gundersheimer, J., Newhouse, P. A., & Grafman, J. H. (1989). Clock drawing in Alzheimer\'s disease: A novel measure of dementia severity. Journal of the American Geriatrics Society, 37(8), 725-729.',
+      'Shulman, K. I. (2000). Clock-drawing: Is it the ideal cognitive screening test? International Journal of Geriatric Psychiatry, 15(6), 548-561.'
+    ]
+  },
+  {
+    id: 'logical-memory',
+    name: 'Logical Memory',
+    fullName: 'Logical Memory Test (WMS-IV)',
+    description: 'A test of immediate and delayed story recall that measures verbal memory and comprehension.',
+    category: 'Memory & Comprehension',
+    duration: 10,
+    difficulty: 'Medium',
+    maxScore: 25,
+    instructions: 'You will read a short story carefully. After reading, the story will be hidden and you will be asked to recall as many details as possible. You will be asked to recall it again after a delay.',
+    questions: [
+      {
+        id: 'logical_story_reading',
+        type: 'story-reading',
+        question: 'Read the following story carefully. You will be asked to recall it later.',
+        storyContent: `Anna was a young woman who lived in a small village near the mountains. She worked as a teacher at the local school and loved to spend her weekends hiking in the nearby forest. One Saturday morning, Anna decided to take a new trail that she had never explored before. She packed her backpack with water, a sandwich, and her camera, then set out early in the morning.
+
+The trail was more challenging than she expected, with steep climbs and rocky paths. After about two hours of hiking, Anna reached a beautiful clearing where she could see the entire valley below. She sat down on a large rock to rest and enjoy the view. While sitting there, she noticed an old wooden box partially hidden under some fallen leaves.
+
+Curious, Anna carefully moved the leaves aside and discovered that the box contained an old map and a small silver key. The map showed trails and landmarks that were not on any of her current hiking maps. The key had an unusual design with intricate carvings. Anna decided to take both items home to investigate further.
+
+When she returned to her village that evening, Anna showed the map and key to her neighbor, Mr. Thompson, who was a retired history teacher. He was very excited about the discovery and suggested they visit the local library to research the area's history. Together, they spent the next few days studying old documents and maps, trying to understand the significance of Anna's find.`,
+        points: 0,
+        timeLimit: 300,
+        required: true
       },
       {
-        id: 'adas_12',
-        type: 'text-input',
-        question: 'Remembering Test Instructions: What were you supposed to do?',
-        points: 5,
-        timeLimit: 60
+        id: 'logical_immediate',
+        type: 'recall',
+        question: 'Immediate Recall: The story is now hidden. Please recall as many details as you can remember from the story you just read. Include characters, events, locations, and any other details you can recall.',
+        points: 15,
+        timeLimit: 180,
+        required: true
       },
       {
-        id: 'adas_13',
+        id: 'logical_delayed',
+        type: 'recall',
+        question: 'Delayed Recall: After a brief delay, please recall the story again. Try to remember as many details as possible, including characters, events, locations, and any other details from the story.',
+        points: 10,
+        timeLimit: 180,
+        required: true
+      }
+    ],
+    scoring: {
+      totalPoints: 25,
+      cutoffScores: {
+        normal: 20,
+        mild: 15,
+        moderate: 10,
+        severe: 0
+      },
+      interpretation: 'Logical Memory measures verbal memory encoding, immediate recall, and delayed recall. Higher scores indicate better memory performance and retention.'
+    },
+    interpretation: {
+      normal: 'Normal memory function (20-25 points) - Excellent story recall and retention',
+      mild: 'Mild memory impairment (15-19 points) - Some difficulty with story details',
+      moderate: 'Moderate memory impairment (10-14 points) - Significant difficulty with recall',
+      severe: 'Severe memory impairment (0-9 points) - Major difficulty with memory tasks',
+      recommendations: [
+        'Practice active reading and note-taking techniques',
+        'Use memory strategies like visualization and association',
+        'Engage in regular storytelling and discussion activities',
+        'Consider memory training exercises and games',
+        'Maintain a regular sleep schedule for memory consolidation'
+      ]
+    },
+    references: [
+      'Wechsler, D. (2009). Wechsler Memory Scale-Fourth Edition (WMS-IV). San Antonio, TX: Pearson.',
+      'Delis, D. C., Kramer, J. H., Kaplan, E., & Ober, B. A. (2000). California Verbal Learning Test-Second Edition (CVLT-II). San Antonio, TX: Psychological Corporation.'
+    ]
+  },
+  {
+    id: 'adas-cog13',
+    name: 'ADAS-Cog13',
+    fullName: 'Alzheimer\'s Disease Assessment Scale-Cognitive Subscale (ADAS-Cog13)',
+    description: 'A comprehensive cognitive assessment specifically designed for Alzheimer\'s disease evaluation.',
+    category: 'Comprehensive Assessment',
+    duration: 45,
+    difficulty: 'Hard',
+    maxScore: 85,
+    instructions: 'This is a comprehensive cognitive assessment with multiple domains including memory, language, praxis, and orientation.',
+    questions: [
+      {
+        id: 'adas_word_recall',
+        type: 'audio-recall',
+        question: 'Listen to these 10 words and remember them. You will be asked to recall them later.',
+        audio: 'adas_word_list.mp3',
+        points: 0,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_word_recall_test',
+        type: 'recall',
+        question: 'Recall the words you just heard:',
+        points: 10,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'adas_naming',
         type: 'recognition',
-        question: 'Number Cancellation: Find and mark all number "3" in this grid',
+        question: 'Name this object:',
+        image: 'adas_finger.png',
+        options: ['Finger', 'Thumb', 'Hand', 'Digit'],
+        correctAnswer: 'Finger',
         points: 5,
-        timeLimit: 90
+        timeLimit: 30,
+        required: true
+      },
+      {
+        id: 'adas_commands',
+        type: 'sequence',
+        question: 'Follow these commands: 1) Make a fist, 2) Point to the ceiling, 3) Point to the floor',
+        points: 5,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_constructional_praxis',
+        type: 'drawing',
+        question: 'Copy this drawing exactly as you see it:',
+        image: 'adas_circle_drawing.png',
+        points: 5,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'adas_ideational_praxis',
+        type: 'sequence',
+        question: 'Show me how you would: 1) Fold a letter, 2) Put it in an envelope, 3) Seal the envelope',
+        points: 5,
+        timeLimit: 90,
+        required: true
+      },
+      {
+        id: 'adas_orientation',
+        type: 'multiple-choice',
+        question: 'What is today\'s date?',
+        options: ['I don\'t know', 'Incorrect date', 'Correct date'],
+        correctAnswer: 'Correct date',
+        points: 8,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_word_recognition',
+        type: 'recognition',
+        question: 'Which of these words was in the original list?',
+        options: ['Apple', 'House', 'Tree', 'None of these'],
+        correctAnswer: 'Apple',
+        points: 12,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_remember_instructions',
+        type: 'recall',
+        question: 'Remember the instructions I gave you earlier about making a fist and pointing:',
+        points: 5,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_spoken_language',
+        type: 'text-input',
+        question: 'Describe what you see in this picture:',
+        image: 'adas_scene.png',
+        points: 5,
+        timeLimit: 120,
+        required: true
+      },
+      {
+        id: 'adas_word_finding',
+        type: 'text-input',
+        question: 'Complete this sentence: "The grass is..."',
+        points: 5,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_comprehension',
+        type: 'multiple-choice',
+        question: 'What would you do if you found a stamped, addressed letter on the sidewalk?',
+        options: ['Leave it there', 'Pick it up and mail it', 'Throw it away', 'Open it'],
+        correctAnswer: 'Pick it up and mail it',
+        points: 5,
+        timeLimit: 60,
+        required: true
+      },
+      {
+        id: 'adas_concentration',
+        type: 'sequence',
+        question: 'Count backwards from 20 by 2s: 20, 18, 16...',
+        points: 5,
+        timeLimit: 90,
+        required: true
       }
     ],
     scoring: {
@@ -265,730 +846,24 @@ export const COGNITIVE_TESTS: CognitiveTest[] = [
         moderate: 20,
         severe: 30
       },
-      interpretation: 'ADAS-Cog13 scores range from 0-85. Lower scores indicate better cognitive function.'
+      interpretation: 'ADAS-Cog13 is scored in reverse - lower scores indicate better cognitive function. Higher scores indicate greater cognitive impairment.'
     },
     interpretation: {
-      normal: 'Normal cognitive function (0-10 points)',
-      mild: 'Mild cognitive impairment (11-20 points)',
-      moderate: 'Moderate cognitive impairment (21-30 points)',
-      severe: 'Severe cognitive impairment (31+ points)',
+      normal: 'Normal cognitive function (0-9 points) - No significant cognitive impairment',
+      mild: 'Mild cognitive impairment (10-19 points) - Some cognitive difficulties',
+      moderate: 'Moderate cognitive impairment (20-29 points) - Significant cognitive problems',
+      severe: 'Severe cognitive impairment (30+ points) - Major cognitive impairment',
       recommendations: [
-        'Consult with healthcare provider for comprehensive evaluation',
-        'Consider neuropsychological assessment',
-        'Monitor cognitive changes over time',
-        'Implement cognitive training exercises'
+        'Regular cognitive monitoring',
+        'Engage in brain training activities',
+        'Maintain social connections',
+        'Consider medical evaluation if persistent',
+        'Follow up with healthcare provider'
       ]
     },
     references: [
-      'Rosen, W.G., Mohs, R.C., & Davis, K.L. (1984). A new rating scale for Alzheimer\'s disease. American Journal of Psychiatry, 141(11), 1356-1364.'
-    ]
-  },
-  {
-    id: 'cdr',
-    name: 'CDR',
-    fullName: 'Clinical Dementia Rating Scale',
-    description: 'A global rating scale that characterizes six domains of cognitive and functional performance applicable to Alzheimer\'s disease and related dementias.',
-    category: 'Dementia Staging',
-    duration: 15,
-    difficulty: 'Medium',
-    maxScore: 3,
-    instructions: 'This assessment evaluates your cognitive and functional abilities across multiple domains. Please answer each question honestly.',
-    questions: [
-      {
-        id: 'cdr_1',
-        type: 'multiple-choice',
-        question: 'Memory: How would you rate your memory problems?',
-        options: ['No memory problems', 'Mild memory problems', 'Moderate memory problems', 'Severe memory problems'],
-        points: 1,
-        timeLimit: 60
-      },
-      {
-        id: 'cdr_2',
-        type: 'multiple-choice',
-        question: 'Orientation: How well do you know where you are and what time it is?',
-        options: ['Fully oriented', 'Mildly disoriented', 'Moderately disoriented', 'Severely disoriented'],
-        points: 1,
-        timeLimit: 60
-      },
-      {
-        id: 'cdr_3',
-        type: 'multiple-choice',
-        question: 'Judgment: How well can you make decisions and solve problems?',
-        options: ['Good judgment', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
-        points: 1,
-        timeLimit: 60
-      },
-      {
-        id: 'cdr_4',
-        type: 'multiple-choice',
-        question: 'Community Affairs: How well can you handle financial and community responsibilities?',
-        options: ['Independent', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
-        points: 1,
-        timeLimit: 60
-      },
-      {
-        id: 'cdr_5',
-        type: 'multiple-choice',
-        question: 'Home and Hobbies: How well can you manage household tasks and hobbies?',
-        options: ['Independent', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
-        points: 1,
-        timeLimit: 60
-      },
-      {
-        id: 'cdr_6',
-        type: 'multiple-choice',
-        question: 'Personal Care: How well can you take care of yourself?',
-        options: ['Fully independent', 'Mildly impaired', 'Moderately impaired', 'Severely impaired'],
-        points: 1,
-        timeLimit: 60
-      }
-    ],
-    scoring: {
-      totalPoints: 3,
-      cutoffScores: {
-        normal: 0,
-        mild: 0.5,
-        moderate: 1,
-        severe: 2
-      },
-      interpretation: 'CDR scores range from 0-3. Higher scores indicate more severe dementia.'
-    },
-    interpretation: {
-      normal: 'No dementia (CDR = 0)',
-      mild: 'Questionable dementia (CDR = 0.5)',
-      moderate: 'Mild dementia (CDR = 1)',
-      severe: 'Moderate dementia (CDR = 2)',
-      recommendations: [
-        'CDR 0: Continue regular cognitive activities',
-        'CDR 0.5: Monitor closely, consider neuropsychological evaluation',
-        'CDR 1+: Consult with neurologist or geriatrician',
-        'Implement appropriate interventions and support services'
-      ]
-    },
-    references: [
-      'Morris, J.C. (1993). The Clinical Dementia Rating (CDR): Current version and scoring rules. Neurology, 43(11), 2412-2414.'
-    ]
-  },
-  {
-    id: 'clock-drawing',
-    name: 'Clock Drawing',
-    fullName: 'Clock Drawing Test',
-    description: 'A visuospatial and executive function test that requires drawing a clock face with numbers and hands set to a specific time.',
-    category: 'Visuospatial & Executive',
-    duration: 5,
-    difficulty: 'Medium',
-    maxScore: 10,
-    instructions: 'Draw a clock face with all numbers and set the hands to show 10 minutes past 11 o\'clock.',
-    questions: [
-      {
-        id: 'clock_1',
-        type: 'drawing',
-        question: 'Draw a clock face with numbers 1-12 and set hands to 11:10',
-        points: 10,
-        timeLimit: 300
-      }
-    ],
-    scoring: {
-      totalPoints: 10,
-      cutoffScores: {
-        normal: 8,
-        mild: 6,
-        moderate: 4,
-        severe: 0
-      },
-      interpretation: 'Clock drawing is scored on a 10-point scale. Higher scores indicate better visuospatial and executive function.'
-    },
-    interpretation: {
-      normal: 'Normal visuospatial function (8-10 points)',
-      mild: 'Mild impairment (6-7 points)',
-      moderate: 'Moderate impairment (4-5 points)',
-      severe: 'Severe impairment (0-3 points)',
-      recommendations: [
-        'Practice visuospatial tasks',
-        'Consider occupational therapy evaluation',
-        'Monitor for changes in spatial awareness'
-      ]
-    },
-    references: [
-      'Shulman, K.I. (2000). Clock-drawing: Is it the ideal cognitive screening test? International Journal of Geriatric Psychiatry, 15(6), 548-561.'
-    ]
-  },
-  {
-    id: 'trail-making',
-    name: 'Trail Making',
-    fullName: 'Trail Making Test (Parts A & B)',
-    description: 'A test of visual attention and task switching that measures processing speed, mental flexibility, and executive function.',
-    category: 'Attention & Executive',
-    duration: 8,
-    difficulty: 'Medium',
-    maxScore: 20,
-    instructions: 'Connect the dots in sequence as quickly as possible. Part A: Connect numbers 1-25. Part B: Connect numbers and letters alternately.',
-    questions: [
-      {
-        id: 'trail_a',
-        type: 'timed',
-        question: 'Part A: Connect numbers 1-25 in sequence',
-        points: 10,
-        timeLimit: 300
-      },
-      {
-        id: 'trail_b',
-        type: 'timed',
-        question: 'Part B: Connect numbers and letters alternately (1-A-2-B-3-C...)',
-        points: 10,
-        timeLimit: 300
-      }
-    ],
-    scoring: {
-      totalPoints: 20,
-      cutoffScores: {
-        normal: 15,
-        mild: 12,
-        moderate: 8,
-        severe: 0
-      },
-      interpretation: 'Trail Making Test measures processing speed and executive function. Lower completion times indicate better performance.'
-    },
-    interpretation: {
-      normal: 'Normal attention and executive function (15-20 points)',
-      mild: 'Mild impairment (12-14 points)',
-      moderate: 'Moderate impairment (8-11 points)',
-      severe: 'Severe impairment (0-7 points)',
-      recommendations: [
-        'Practice attention and concentration exercises',
-        'Consider cognitive training programs',
-        'Monitor for attention difficulties'
-      ]
-    },
-    references: [
-      'Reitan, R.M. (1958). Validity of the Trail Making Test as an indicator of organic brain damage. Perceptual and Motor Skills, 8(3), 271-276.'
-    ]
-  },
-  {
-    id: 'verbal-fluency',
-    name: 'Verbal Fluency',
-    fullName: 'Verbal Fluency Test (FAS)',
-    description: 'A test of verbal ability and executive function that requires generating words beginning with specific letters within a time limit.',
-    category: 'Language & Executive',
-    duration: 6,
-    difficulty: 'Medium',
-    maxScore: 15,
-    instructions: 'Generate as many words as possible beginning with the letters F, A, and S. You have 60 seconds for each letter.',
-    questions: [
-      {
-        id: 'fluency_f',
-        type: 'timed',
-        question: 'Generate words beginning with F (60 seconds)',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'fluency_a',
-        type: 'timed',
-        question: 'Generate words beginning with A (60 seconds)',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'fluency_s',
-        type: 'timed',
-        question: 'Generate words beginning with S (60 seconds)',
-        points: 5,
-        timeLimit: 60
-      }
-    ],
-    scoring: {
-      totalPoints: 15,
-      cutoffScores: {
-        normal: 12,
-        mild: 9,
-        moderate: 6,
-        severe: 0
-      },
-      interpretation: 'Verbal fluency measures language ability and executive function. Higher word counts indicate better performance.'
-    },
-    interpretation: {
-      normal: 'Normal verbal fluency (12-15 points)',
-      mild: 'Mild impairment (9-11 points)',
-      moderate: 'Moderate impairment (6-8 points)',
-      severe: 'Severe impairment (0-5 points)',
-      recommendations: [
-        'Practice word games and puzzles',
-        'Read regularly to maintain vocabulary',
-        'Consider speech therapy if language difficulties persist'
-      ]
-    },
-    references: [
-      'Benton, A.L., & Hamsher, K. (1976). Multilingual Aphasia Examination. Iowa City: University of Iowa.'
-    ]
-  },
-  {
-    id: 'digit-span',
-    name: 'Digit Span',
-    fullName: 'Digit Span Test (Forward & Backward)',
-    description: 'A test of immediate memory and working memory that measures the ability to remember and manipulate sequences of numbers.',
-    category: 'Memory & Attention',
-    duration: 7,
-    difficulty: 'Medium',
-    maxScore: 16,
-    instructions: 'Listen to sequences of numbers and repeat them. Forward: Repeat in same order. Backward: Repeat in reverse order.',
-    questions: [
-      {
-        id: 'digit_forward',
-        type: 'sequence',
-        question: 'Forward: Repeat these numbers in the same order',
-        points: 8,
-        timeLimit: 120
-      },
-      {
-        id: 'digit_backward',
-        type: 'sequence',
-        question: 'Backward: Repeat these numbers in reverse order',
-        points: 8,
-        timeLimit: 120
-      }
-    ],
-    scoring: {
-      totalPoints: 16,
-      cutoffScores: {
-        normal: 12,
-        mild: 9,
-        moderate: 6,
-        severe: 0
-      },
-      interpretation: 'Digit span measures immediate memory and working memory. Higher scores indicate better memory capacity.'
-    },
-    interpretation: {
-      normal: 'Normal memory function (12-16 points)',
-      mild: 'Mild memory impairment (9-11 points)',
-      moderate: 'Moderate memory impairment (6-8 points)',
-      severe: 'Severe memory impairment (0-5 points)',
-      recommendations: [
-        'Practice memory exercises and games',
-        'Use memory strategies and mnemonics',
-        'Consider memory training programs'
-      ]
-    },
-    references: [
-      'Wechsler, D. (2008). Wechsler Adult Intelligence Scale-Fourth Edition (WAIS-IV). San Antonio, TX: Pearson.'
-    ]
-  },
-  {
-    id: 'boston-naming',
-    name: 'Boston Naming',
-    fullName: 'Boston Naming Test (Short Form)',
-    description: 'A test of confrontational naming ability that measures language function and semantic memory.',
-    category: 'Language & Memory',
-    duration: 8,
-    difficulty: 'Medium',
-    maxScore: 15,
-    instructions: 'Name the object shown in each picture. If you can\'t name it, try to describe what it is.',
-    questions: [
-      {
-        id: 'naming_1',
-        type: 'recognition',
-        question: 'Name this object (Picture 1)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_2',
-        type: 'recognition',
-        question: 'Name this object (Picture 2)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_3',
-        type: 'recognition',
-        question: 'Name this object (Picture 3)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_4',
-        type: 'recognition',
-        question: 'Name this object (Picture 4)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_5',
-        type: 'recognition',
-        question: 'Name this object (Picture 5)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_6',
-        type: 'recognition',
-        question: 'Name this object (Picture 6)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_7',
-        type: 'recognition',
-        question: 'Name this object (Picture 7)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_8',
-        type: 'recognition',
-        question: 'Name this object (Picture 8)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_9',
-        type: 'recognition',
-        question: 'Name this object (Picture 9)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_10',
-        type: 'recognition',
-        question: 'Name this object (Picture 10)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_11',
-        type: 'recognition',
-        question: 'Name this object (Picture 11)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_12',
-        type: 'recognition',
-        question: 'Name this object (Picture 12)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_13',
-        type: 'recognition',
-        question: 'Name this object (Picture 13)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_14',
-        type: 'recognition',
-        question: 'Name this object (Picture 14)',
-        points: 1,
-        timeLimit: 30
-      },
-      {
-        id: 'naming_15',
-        type: 'recognition',
-        question: 'Name this object (Picture 15)',
-        points: 1,
-        timeLimit: 30
-      }
-    ],
-    scoring: {
-      totalPoints: 15,
-      cutoffScores: {
-        normal: 12,
-        mild: 9,
-        moderate: 6,
-        severe: 0
-      },
-      interpretation: 'Boston Naming Test measures language function and semantic memory. Higher scores indicate better naming ability.'
-    },
-    interpretation: {
-      normal: 'Normal naming ability (12-15 points)',
-      mild: 'Mild naming impairment (9-11 points)',
-      moderate: 'Moderate naming impairment (6-8 points)',
-      severe: 'Severe naming impairment (0-5 points)',
-      recommendations: [
-        'Practice naming everyday objects',
-        'Read and discuss various topics',
-        'Consider speech therapy evaluation'
-      ]
-    },
-    references: [
-      'Kaplan, E., Goodglass, H., & Weintraub, S. (1983). The Boston Naming Test (2nd ed.). Philadelphia: Lea & Febiger.'
-    ]
-  },
-  {
-    id: 'rey-auditory',
-    name: 'Rey Auditory',
-    fullName: 'Rey Auditory Verbal Learning Test (RAVLT)',
-    description: 'A test of verbal learning and memory that measures immediate recall, delayed recall, and recognition memory.',
-    category: 'Memory & Learning',
-    duration: 12,
-    difficulty: 'Hard',
-    maxScore: 20,
-    instructions: 'Listen to a list of 15 words and try to remember them. You will be asked to recall them several times.',
-    questions: [
-      {
-        id: 'rey_trial1',
-        type: 'recall',
-        question: 'Trial 1: Recall as many words as you can remember',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'rey_trial2',
-        type: 'recall',
-        question: 'Trial 2: Recall as many words as you can remember',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'rey_trial3',
-        type: 'recall',
-        question: 'Trial 3: Recall as many words as you can remember',
-        points: 5,
-        timeLimit: 60
-      },
-      {
-        id: 'rey_delayed',
-        type: 'recall',
-        question: 'Delayed Recall: After a delay, recall as many words as you can remember',
-        points: 5,
-        timeLimit: 60
-      }
-    ],
-    scoring: {
-      totalPoints: 20,
-      cutoffScores: {
-        normal: 15,
-        mild: 12,
-        moderate: 8,
-        severe: 0
-      },
-      interpretation: 'RAVLT measures verbal learning and memory. Higher scores indicate better memory performance.'
-    },
-    interpretation: {
-      normal: 'Normal memory function (15-20 points)',
-      mild: 'Mild memory impairment (12-14 points)',
-      moderate: 'Moderate memory impairment (8-11 points)',
-      severe: 'Severe memory impairment (0-7 points)',
-      recommendations: [
-        'Practice memory exercises and techniques',
-        'Use spaced repetition for learning',
-        'Consider memory training programs'
-      ]
-    },
-    references: [
-      'Rey, A. (1964). L\'examen clinique en psychologie. Paris: Presses Universitaires de France.'
-    ]
-  },
-  {
-    id: 'stroop-test',
-    name: 'Stroop Test',
-    fullName: 'Stroop Color and Word Test',
-    description: 'A test of cognitive interference and executive function that measures the ability to inhibit automatic responses.',
-    category: 'Executive Function',
-    duration: 8,
-    difficulty: 'Hard',
-    maxScore: 15,
-    instructions: 'Name the color of the ink, not the word. For example, if you see the word "RED" written in blue ink, say "blue".',
-    questions: [
-      {
-        id: 'stroop_congruent',
-        type: 'timed',
-        question: 'Congruent: Name the color of the ink (words match colors)',
-        points: 5,
-        timeLimit: 120
-      },
-      {
-        id: 'stroop_incongruent',
-        type: 'timed',
-        question: 'Incongruent: Name the color of the ink (words don\'t match colors)',
-        points: 5,
-        timeLimit: 120
-      },
-      {
-        id: 'stroop_interference',
-        type: 'timed',
-        question: 'Interference: Calculate the difference between congruent and incongruent times',
-        points: 5,
-        timeLimit: 60
-      }
-    ],
-    scoring: {
-      totalPoints: 15,
-      cutoffScores: {
-        normal: 12,
-        mild: 9,
-        moderate: 6,
-        severe: 0
-      },
-      interpretation: 'Stroop Test measures executive function and cognitive control. Lower interference scores indicate better performance.'
-    },
-    interpretation: {
-      normal: 'Normal executive function (12-15 points)',
-      mild: 'Mild impairment (9-11 points)',
-      moderate: 'Moderate impairment (6-8 points)',
-      severe: 'Severe impairment (0-5 points)',
-      recommendations: [
-        'Practice attention and concentration exercises',
-        'Use mindfulness and meditation techniques',
-        'Consider cognitive training programs'
-      ]
-    },
-    references: [
-      'Stroop, J.R. (1935). Studies of interference in serial verbal reactions. Journal of Experimental Psychology, 18(6), 643-662.'
-    ]
-  },
-  {
-    id: 'category-fluency',
-    name: 'Category Fluency',
-    fullName: 'Category Fluency Test (Animals)',
-    description: 'A test of semantic memory and verbal fluency that requires generating words from a specific category within a time limit.',
-    category: 'Language & Memory',
-    duration: 5,
-    difficulty: 'Easy',
-    maxScore: 10,
-    instructions: 'Generate as many animal names as possible in 60 seconds. Be specific (e.g., "African elephant" counts as one animal).',
-    questions: [
-      {
-        id: 'category_animals',
-        type: 'timed',
-        question: 'Name as many animals as you can think of in 60 seconds',
-        points: 10,
-        timeLimit: 60
-      }
-    ],
-    scoring: {
-      totalPoints: 10,
-      cutoffScores: {
-        normal: 8,
-        mild: 6,
-        moderate: 4,
-        severe: 0
-      },
-      interpretation: 'Category fluency measures semantic memory and verbal ability. Higher word counts indicate better performance.'
-    },
-    interpretation: {
-      normal: 'Normal semantic memory (8-10 points)',
-      mild: 'Mild impairment (6-7 points)',
-      moderate: 'Moderate impairment (4-5 points)',
-      severe: 'Severe impairment (0-3 points)',
-      recommendations: [
-        'Practice category-based word games',
-        'Read about various topics and categories',
-        'Engage in discussions about different subjects'
-      ]
-    },
-    references: [
-      'Benton, A.L., & Hamsher, K. (1976). Multilingual Aphasia Examination. Iowa City: University of Iowa.'
-    ]
-  },
-  {
-    id: 'block-design',
-    name: 'Block Design',
-    fullName: 'Block Design Test',
-    description: 'A test of visuospatial ability and constructional praxis that requires copying geometric patterns using colored blocks.',
-    category: 'Visuospatial & Construction',
-    duration: 10,
-    difficulty: 'Medium',
-    maxScore: 15,
-    instructions: 'Copy the geometric pattern shown using the colored blocks provided. Work as quickly and accurately as possible.',
-    questions: [
-      {
-        id: 'block_1',
-        type: 'drawing',
-        question: 'Copy this geometric pattern using colored blocks',
-        points: 5,
-        timeLimit: 120
-      },
-      {
-        id: 'block_2',
-        type: 'drawing',
-        question: 'Copy this more complex geometric pattern',
-        points: 5,
-        timeLimit: 180
-      },
-      {
-        id: 'block_3',
-        type: 'drawing',
-        question: 'Copy this advanced geometric pattern',
-        points: 5,
-        timeLimit: 240
-      }
-    ],
-    scoring: {
-      totalPoints: 15,
-      cutoffScores: {
-        normal: 12,
-        mild: 9,
-        moderate: 6,
-        severe: 0
-      },
-      interpretation: 'Block Design measures visuospatial ability and constructional praxis. Higher scores indicate better spatial skills.'
-    },
-    interpretation: {
-      normal: 'Normal visuospatial function (12-15 points)',
-      mild: 'Mild impairment (9-11 points)',
-      moderate: 'Moderate impairment (6-8 points)',
-      severe: 'Severe impairment (0-5 points)',
-      recommendations: [
-        'Practice puzzles and spatial games',
-        'Use drawing and construction activities',
-        'Consider occupational therapy evaluation'
-      ]
-    },
-    references: [
-      'Wechsler, D. (2008). Wechsler Adult Intelligence Scale-Fourth Edition (WAIS-IV). San Antonio, TX: Pearson.'
-    ]
-  },
-  {
-    id: 'logical-memory',
-    name: 'Logical Memory',
-    fullName: 'Logical Memory Test (WMS-IV)',
-    description: 'A test of immediate and delayed story recall that measures verbal memory and comprehension.',
-    category: 'Memory & Comprehension',
-    duration: 8,
-    difficulty: 'Medium',
-    maxScore: 15,
-    instructions: 'Listen to a short story and then recall as many details as you can remember. You will be asked to recall it again later.',
-    questions: [
-      {
-        id: 'logical_immediate',
-        type: 'recall',
-        question: 'Immediate Recall: Recall the story you just heard',
-        points: 8,
-        timeLimit: 120
-      },
-      {
-        id: 'logical_delayed',
-        type: 'recall',
-        question: 'Delayed Recall: After a delay, recall the story again',
-        points: 7,
-        timeLimit: 120
-      }
-    ],
-    scoring: {
-      totalPoints: 15,
-      cutoffScores: {
-        normal: 12,
-        mild: 9,
-        moderate: 6,
-        severe: 0
-      },
-      interpretation: 'Logical Memory measures verbal memory and comprehension. Higher scores indicate better memory performance.'
-    },
-    interpretation: {
-      normal: 'Normal memory function (12-15 points)',
-      mild: 'Mild memory impairment (9-11 points)',
-      moderate: 'Moderate memory impairment (6-8 points)',
-      severe: 'Severe memory impairment (0-5 points)',
-      recommendations: [
-        'Practice active listening and note-taking',
-        'Use memory techniques like visualization',
-        'Engage in storytelling and discussion activities'
-      ]
-    },
-    references: [
-      'Wechsler, D. (2009). Wechsler Memory Scale-Fourth Edition (WMS-IV). San Antonio, TX: Pearson.'
+      'Rosen, W. G., Mohs, R. C., & Davis, K. L. (1984). A new rating scale for Alzheimer\'s disease. The American Journal of Psychiatry, 141(11), 1356-1364.',
+      'Mohs, R. C., Rosen, W. G., & Davis, K. L. (1983). The Alzheimer\'s disease assessment scale: An instrument for assessing treatment efficacy. Psychopharmacology Bulletin, 19(3), 448-450.'
     ]
   }
 ];

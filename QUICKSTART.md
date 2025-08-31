@@ -1,130 +1,228 @@
-# 🚀 Quick Start Guide - Alzico Alzheimer's Detection App
+# 🚀 Alzico Quick Start Guide
 
-Get your cognitive assessment app running in under 5 minutes!
+Get started with Alzico in minutes! This guide will walk you through the essential steps to begin using the Alzheimer's detection app.
 
-## ⚡ **Super Quick Start (Web Only)**
+## ⚡ Quick Setup (5 minutes)
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### 1. **Launch the App**
+- Open Alzico on your device
+- You'll see the welcome screen with login/signup options
 
-2. **Start the web app:**
-   ```bash
-   npm run web
-   ```
+### 2. **Demo Login (Recommended for First Time)**
+- **Email**: `demo@alzico.com`
+- **Password**: `password123`
+- Click "Login"
 
-3. **Open your browser:**
-   Navigate to `http://localhost:3002`
+### 3. **Read & Accept Consent**
+- Review the assessment consent form
+- Click "I Agree" to proceed
 
-4. **🎉 You're done!** Start using the app immediately.
+### 4. **Start Your First Test**
+- Click "Start Cognitive Test" on the main screen
+- Choose a test from the list (we recommend starting with MMSE)
 
-## 📱 **Full Platform Setup**
+## 🧪 Your First Cognitive Test
 
-### **Prerequisites Check**
-- ✅ Node.js 16+ installed
-- ✅ npm or yarn package manager
-- ✅ Git (for cloning)
+### **Recommended: MMSE Test**
+- **Duration**: 10 minutes
+- **Difficulty**: Easy
+- **Questions**: 10 orientation questions
+- **Perfect for**: First-time users and baseline assessment
 
-### **Step-by-Step Setup**
+### **Test Flow**
+1. **Instructions**: Read the test description and instructions
+2. **Start**: Click "Start Test" when ready
+3. **Questions**: Answer each question to the best of your ability
+4. **Progress**: Watch your progress bar advance
+5. **Complete**: Finish all questions to see your results
 
-#### **1. Clone & Install**
-```bash
-git clone <your-repo-url>
-cd alzico
-npm install
-```
+### **Question Types You'll Encounter**
+- **Text Input**: Type your answers (e.g., "What year is it?")
+- **Multiple Choice**: Select from provided options
+- **Timed Tasks**: Complete tasks within time limits
+- **Drawing Tasks**: Use touch/drawing for spatial tasks
 
-#### **2. Web Version (Easiest)**
-```bash
-npm run web
-```
-- Opens automatically in browser
-- No additional setup required
-- Works on all operating systems
+## 📊 Understanding Your Results
 
-#### **3. Android Version**
-```bash
-# Install Android Studio first
-# Set ANDROID_HOME environment variable
-npm run android
-```
+### **Score Interpretation**
+- **80-100%**: Excellent cognitive function
+- **60-79%**: Good cognitive function
+- **40-59%**: Fair cognitive function
+- **Below 40%**: May indicate cognitive concerns
 
-#### **4. iOS Version (macOS only)**
-```bash
-# Install Xcode first
-cd ios && pod install && cd ..
-npm run ios
-```
+### **Severity Levels**
+- **Normal**: No cognitive impairment detected
+- **Mild**: Minor cognitive concerns
+- **Moderate**: Moderate cognitive impairment
+- **Severe**: Significant cognitive impairment
 
-## 🎯 **What You'll See**
+### **What to Do Next**
+- **Normal/Mild**: Continue regular cognitive activities
+- **Moderate/Severe**: Consult with healthcare provider
+- **All Results**: Save and track over time
 
-1. **Welcome Screen** - App introduction
-2. **Login Screen** - Enter patient information
-3. **Consent Screen** - Assessment agreement
-4. **Main Dashboard** - Progress tracking
-5. **Test Selection** - Choose cognitive tests
-6. **Test Interface** - Interactive assessments
-7. **Results Display** - Performance feedback
+## 🔄 Regular Testing Schedule
 
-## 🧪 **Available Tests**
+### **Recommended Frequency**
+- **Baseline**: Take your first test today
+- **Monthly**: Retake tests to monitor changes
+- **Quarterly**: Comprehensive assessment
+- **As Needed**: If you notice cognitive changes
 
-- **Memory Test** - Pattern recognition
-- **Attention Test** - Focus exercises
-- **Processing Speed** - Reaction time
-- **Language Test** - Communication skills
-- **Visuospatial** - Spatial awareness
-- **Executive Function** - Planning abilities
+### **Test Rotation Strategy**
+- **Week 1**: MMSE (global assessment)
+- **Week 2**: Clock Drawing (spatial skills)
+- **Week 3**: Verbal Fluency (language)
+- **Week 4**: Trail Making (attention)
+- **Month 2**: Repeat cycle or try new tests
 
-## 🔧 **Troubleshooting**
+## 📱 App Navigation
 
-### **Common Issues**
+### **Main Screens**
+- **🏠 Home**: Dashboard and quick actions
+- **🧪 Tests**: Browse and select cognitive tests
+- **📊 Results**: View your test history and scores
+- **👤 Profile**: Manage your account and preferences
+- **❓ Help**: Get assistance and information
 
-#### **Port Already in Use**
-```bash
-# Windows
-netstat -ano | findstr :3002
-taskkill /F /PID <PID>
+### **Quick Actions**
+- **SOS Button**: Emergency help access
+- **Recent Tests**: Quick access to recent assessments
+- **Progress Tracking**: View your improvement over time
 
-# macOS/Linux
-lsof -ti:3002 | xargs kill -9
-```
+## 💡 Pro Tips for Better Results
 
-#### **Dependencies Issues**
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
+### **Before Testing**
+- **Environment**: Find a quiet, distraction-free space
+- **Time**: Choose a time when you're most alert
+- **Device**: Ensure your device is fully charged
+- **Comfort**: Sit in a comfortable position
 
-#### **Webpack Issues**
-```bash
-npm run build
-npm run web
-```
+### **During Testing**
+- **Focus**: Give each question your full attention
+- **Accuracy**: Prioritize accuracy over speed
+- **Breaks**: Take short breaks if needed
+- **Honesty**: Answer truthfully - there are no "right" answers
 
-### **Still Having Problems?**
+### **After Testing**
+- **Review**: Carefully read your results and recommendations
+- **Save**: Store your results for future reference
+- **Share**: Consider sharing results with healthcare providers
+- **Plan**: Use recommendations to plan cognitive activities
 
-1. **Check Node.js version:** `node --version` (should be 16+)
-2. **Clear npm cache:** `npm cache clean --force`
-3. **Restart terminal/command prompt**
-4. **Check firewall/antivirus settings**
+## 🆘 Getting Help
 
-## 📚 **Next Steps**
+### **In-App Support**
+- **Help Screen**: Comprehensive guides and FAQs
+- **About Screen**: App information and resources
+- **SOS Button**: Emergency assistance access
 
-- **Customize Tests** - Modify test content in `screens/`
-- **Add Features** - Extend functionality in `components/`
-- **Style Changes** - Update colors in `constants/Colors.ts`
-- **Deploy** - Build for production with `npm run build`
+### **Common Questions**
+- **"I can't remember my password"**: Use demo login or contact support
+- **"The test seems too hard"**: Try easier tests first, all tests are adaptive
+- **"My results seem concerning"**: Consult with healthcare professionals
+- **"How often should I test?"**: Monthly testing is recommended for monitoring
 
-## 🆘 **Need Help?**
+## 🔒 Privacy & Data
 
-- 📖 **Full Documentation:** See `README.md`
-- 🐛 **Report Issues:** Create GitHub issue
-- 💬 **Community:** Join our Discord/Forum
-- 📧 **Direct Support:** support@alzico.com
+### **Your Data is Private**
+- **Local Storage**: All data stays on your device
+- **No Sharing**: We don't share your data with third parties
+- **Your Control**: You decide what to export or share
+- **Secure**: Data is encrypted and protected
+
+### **Data Management**
+- **Export**: Save results as PDF or share with doctors
+- **Backup**: Create backups of your test data
+- **Delete**: Remove data you no longer want
+- **Sync**: Optional cloud backup (coming soon)
+
+## 🎯 Setting Goals
+
+### **Short-term Goals (1-4 weeks)**
+- Complete your first cognitive assessment
+- Establish baseline cognitive function
+- Learn how to use the app effectively
+- Try 2-3 different types of tests
+
+### **Medium-term Goals (1-6 months)**
+- Establish regular testing routine
+- Track cognitive changes over time
+- Identify areas for improvement
+- Develop cognitive training habits
+
+### **Long-term Goals (6+ months)**
+- Maintain cognitive health monitoring
+- Detect early signs of cognitive changes
+- Share results with healthcare team
+- Contribute to cognitive health research
+
+## 🚨 When to Seek Professional Help
+
+### **Immediate Attention**
+- **Severe Results**: If tests consistently show severe impairment
+- **Rapid Decline**: Sudden worsening of cognitive function
+- **Safety Concerns**: Difficulty with daily activities
+- **Family Concerns**: Loved ones notice significant changes
+
+### **Professional Consultation**
+- **Neurologist**: For comprehensive cognitive evaluation
+- **Geriatrician**: For age-related cognitive concerns
+- **Psychologist**: For cognitive assessment and therapy
+- **Primary Care**: For initial evaluation and referrals
+
+## 📚 Learning Resources
+
+### **Understanding Cognitive Health**
+- **Memory**: How memory works and changes with age
+- **Attention**: Focus and concentration strategies
+- **Language**: Communication and word-finding skills
+- **Spatial Skills**: Visual and spatial awareness
+- **Executive Function**: Planning and decision-making
+
+### **Cognitive Training Activities**
+- **Memory Games**: Crossword puzzles, memory cards
+- **Language Activities**: Reading, writing, word games
+- **Spatial Tasks**: Drawing, puzzles, navigation
+- **Attention Exercises**: Meditation, focus training
+- **Social Activities**: Conversations, group activities
+
+## 🔄 Regular Maintenance
+
+### **Weekly Tasks**
+- Review recent test results
+- Plan cognitive activities
+- Check app for updates
+- Backup important data
+
+### **Monthly Tasks**
+- Take comprehensive cognitive assessment
+- Review progress trends
+- Update healthcare providers
+- Plan next month's activities
+
+### **Quarterly Tasks**
+- Deep analysis of cognitive trends
+- Consultation with healthcare team
+- Update cognitive training plan
+- Review and adjust goals
 
 ---
 
-**🎯 Goal: Get you testing cognitive functions in minutes, not hours!**
+## 🎉 You're Ready to Start!
 
-**Ready to start? Run `npm run web` and begin your cognitive health journey! 🧠✨** 
+**Next Steps:**
+1. ✅ Launch Alzico
+2. ✅ Login with demo credentials
+3. ✅ Accept consent
+4. ✅ Take your first test (MMSE recommended)
+5. ✅ Review your results
+6. ✅ Plan your testing schedule
+
+**Remember**: Alzico is a tool to support your cognitive health journey. Regular testing helps establish baselines and detect changes early. Always consult with healthcare professionals for medical advice.
+
+**Need Help?** Use the in-app help system or contact our support team.
+
+---
+
+*Welcome to Alzico - Your partner in cognitive health monitoring! 🧠✨* 
